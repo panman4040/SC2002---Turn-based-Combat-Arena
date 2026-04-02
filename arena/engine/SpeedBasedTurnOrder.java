@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Comparator;
 import arena.domain.entity.Combatant;
 
-// Order is 
+// The characters with higher speed will act before those with lower speed.
 public class SpeedBasedTurnOrder implements TurnOrderStrategy {
     @Override
     public List<Combatant> determineTurnOrder(List<Combatant> combatants) {
