@@ -2,7 +2,7 @@ package arena.engine;
 
 import java.util.List;
 import java.util.Comparator;
-import arena.domain.Combatant;
+import arena.domain.entity.Combatant;
 
 // Order is 
 public class SpeedBasedTurnOrder implements TurnOrderStrategy {
