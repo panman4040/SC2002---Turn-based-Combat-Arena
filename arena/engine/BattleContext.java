@@ -25,8 +25,7 @@ public class BattleContext {
     }
 
     public List<Enemy> getAliveEnemies() {
-        List<Combatant> activeEnemiesCopy = new ArrayList<>(activeEnemies);
-        return activeEnemiesCopy;
+        return new ArrayList<>(activeEnemies);
     }
 
     public void removeDead() {
