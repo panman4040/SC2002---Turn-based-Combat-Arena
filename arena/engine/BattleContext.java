@@ -25,7 +25,8 @@ public class BattleContext {
     }
 
     public List<Enemy> getAliveEnemies() {
-        return activeEnemies;
+        List<Combatant> activeEnemiesCopy = new ArrayList<>(activeEnemies);
+        return activeEnemiesCopy;
     }
 
     public void removeDead() {
@@ -65,6 +66,7 @@ public class BattleContext {
         return !player.isAlive();
     }
 
+    // removeDead() MUST BE CALLED first before this function
     public boolean isAllEnemiesDead() {
         return activeEnemies.isEmpty();
     }
