@@ -28,16 +28,25 @@ public class BattleContext {
         return activeEnemies;
     }
 
-    public List<Combatant> getAllCombatants() {
-        List<Combatant> combatants = new ArrayList<>();
-        combatants.add(player);
-        
+    public void removeDead() {
+        List<Enemy> temp = new ArrayList<>();
+
         // Add only alive enemies
         for (Enemy enemy : activeEnemies) {
             if (enemy.isAlive()) {
-                combatants.add(enemy);
+                temp.add(enemy);
             }
         }
+
+        // Update the list of active enemies
+        activeEnemies.clear();
+        activeEnemies.addAll(temp);
+    }
+
+    public List<Combatant> getAllCombatants() {
+        List<Combatant> combatants = new ArrayList<>();
+        combatants.add(player);
+        combatants.addAll(activeEnemies);
 
         return combatants;
     }
