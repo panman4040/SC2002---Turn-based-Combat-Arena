@@ -1,26 +1,37 @@
 package arena.domain.action;
 
-import arena.domain.entity.*;
+import arena.domain.effect.ArcaneBlastBuff;
+import arena.domain.entity.Combatant;
 import arena.engine.BattleContext;
 
+
 public class ArcaneBlast extends SpecialSkill {
+
+    private static final int ATTACK_BONUS = 20;
+
+    private final Combatant target;
+
+    public ArcaneBlast(Combatant target) {
+        super("Arcane Blast", 3);
+        this.target = target;
+    }
+
     @Override
-    public void execute(Combatant actor, Combatant target, BattleContext context) {
-        if (!isAvailable())
-            return;
+    public String execute(Combatant user, BattleContext context) {
+        
+        user.addStatusEffect(new ArcaneBlastBuff(ATTACK_BONUS));
 
-        for (Combatant enemy : context.getEnemies()) {
-            if (!enemy.isAlive())
-                continue;
+        int atk    = user.getEffectiveAttack(); 
+        int def    = target.getEffectiveDefense();
+        int damage = Math.max(0, atk - def);
 
-            int dmg = Math.max(0, actor.getAttack() - enemy.getDefense());
-            enemy.takeDamage(dmg);
+        int hpBefore = target.getCurrentHp();
+        target.takeDamage(damage);
+        int hpAfter  = target.getCurrentHp();
 
-            if (!enemy.isAlive() && actor instanceof Wizard) {
-                ((Wizard) actor).increaseAttack(10);
-            }
-        }
-
-        triggerCooldown();
+        return String.format(
+            "%s channels Arcane Blast! Attack surges by +%d → %s: HP %d → %d (%d dmg)",
+            user.getName(), ATTACK_BONUS, target.getName(), hpBefore, hpAfter, damage
+        );
     }
 }

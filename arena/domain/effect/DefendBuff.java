@@ -2,24 +2,22 @@ package arena.domain.effect;
 
 import arena.domain.entity.Combatant;
 
-public class DefendBuff implements StatusEffect {
-    private int turns = 2;
+public class DefendBuff extends StatusEffect {
 
-    @Override
-    public void onApply(Combatant target) {
-        target.increaseDefense(10);
+    private final int defenseBonus;
+
+    public DefendBuff(int defenseBonus) {
+        super(1); // lasts one round
+        this.defenseBonus = defenseBonus;
     }
 
     @Override
-    public void onTurnStart(Combatant target) {
-        turns--;
-        if (turns == 0) {
-            target.increaseDefense(-10);
-        }
+    public int modifyIncomingDamage(int damage) {
+        return Math.max(0, damage - defenseBonus);
     }
 
     @Override
-    public boolean isExpired() {
-        return turns <= 0;
+    public String getName() {
+        return "Defend (+" + defenseBonus + " DEF)";
     }
 }

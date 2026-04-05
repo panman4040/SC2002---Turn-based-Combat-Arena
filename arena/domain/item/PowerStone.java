@@ -1,18 +1,22 @@
 package arena.domain.item;
 
+import arena.domain.effect.ArcaneBlastBuff;
 import arena.domain.entity.Combatant;
-import arena.domain.action.SpecialSkill;
 import arena.engine.BattleContext;
 
 public class PowerStone implements Item {
-    private SpecialSkill skill;
 
-    public PowerStone(SpecialSkill skill) {
-        this.skill = skill;
-    }
+    private static final int ATTACK_BONUS = 25;
+
+    public PowerStone() {}
 
     @Override
     public void use(Combatant user, BattleContext context) {
-        skill.execute(user, null, context); // no cooldown change
+        user.addStatusEffect(new ArcaneBlastBuff(ATTACK_BONUS));
+    }
+
+    @Override
+    public String getName() {
+        return "Power Stone";
     }
 }
