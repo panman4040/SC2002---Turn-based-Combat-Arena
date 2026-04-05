@@ -81,7 +81,7 @@ public class CLIGameUI implements GameUI {
         System.out.println("2. Medium");
         System.out.println("3. Hard");
         int choice = scanner.nextInt();
-        return null; // placeholder for now
+        return null; // placeholder for now. will further implement soon with switch.
     }
     // Player action selection
     public Action getPlayerAction(Player player, BattleContext context) {
@@ -92,6 +92,6 @@ public class CLIGameUI implements GameUI {
         System.out.println("4. Special Skill");
 
         int choice = scanner.nextInt();
-        return null; //placeholder for now
+        return null; //placeholder for now. will further implement soon with switch.
     }
 }
