@@ -2,9 +2,8 @@ package arena.ui;
 import java.util.List;
 import java.util.Scanner;
 
-import arena.domain.entity.Combatant; //waiting implementation
-import arena.domain.entity.Enemy;
-import arena.domain.entity.Player; // waiting implementation
+import arena.domain.entity.Combatant;
+import arena.domain.entity.Player;
 
 import arena.domain.action.Action;
 import arena.domain.action.BasicAttack;
@@ -13,12 +12,13 @@ import arena.domain.action.UseItem;
 import arena.domain.item.Item;
 
 import arena.engine.BattleContext;
-import arena.engine.Level; // waiting implementation
+import arena.engine.Level;
 
 
 public class CLIGameUI implements GameUI {
 
     private Scanner scanner;
+
     public CLIGameUI() {
         scanner = new Scanner(System.in);
     }
@@ -28,7 +28,7 @@ public class CLIGameUI implements GameUI {
     }
 
     // Battle State for (runRound)
-    public void displayBattleState(BattleContext context){
+    public void displayBattleState(BattleContext context) {
         System.out.println("=== Battle State ===");
         System.out.print("End of Round" + context.getRoundNumber() + ": ");
 
@@ -37,7 +37,7 @@ public class CLIGameUI implements GameUI {
         System.out.print(player.getName() + " HP: " + "/" + player.getMaxHp());
 
         //for enemy if alive
-        for (Combatant enemy : context.getAliveEnemies()){
+        for (Combatant enemy : context.getAliveEnemies()) {
             System.out.print(" | " + enemy.getName() + " HP: " + enemy.getHp());
         }
 
@@ -45,20 +45,20 @@ public class CLIGameUI implements GameUI {
         int powerStoneCount = 0;
         int potionCount = 0;
 
-        for (var item : player.getItems()){
-            if (item.getName().equals("Power Stone")){
+        for (var item : player.getItems()) {
+            if (item.getName().equals("Power Stone")) {
                 powerStoneCount++;
-            }
-            else if (item.getName().equals("Potion")){
+            } else if (item.getName().equals("Potion")) {
                 potionCount++;
             }
         }
         System.out.print(" | Power Stone: " + powerStoneCount);
         System.out.print(" | Potion " + potionCount);
 
-        System.out.print(" | Special Skills Cooldown: " + player.getCooldownDuration() + " round");
+        System.out.print(" | Special Skills Cooldown: " + player.getSpecialSkill().getCooldownDuration() + " round");
         System.out.println(); // now getCooldownDuration is not under player
     }
+
     //  Turn order for (runRound)
     public void displayTurnOrder(List<Combatant> combatants) {
         System.out.print("Turn Order: ");
@@ -71,6 +71,7 @@ public class CLIGameUI implements GameUI {
         }
         System.out.println();
     }
+
     // User Input
     // Difficulty selection
     public Level chooseDifficulty() {
@@ -96,47 +97,49 @@ public class CLIGameUI implements GameUI {
                     System.out.println("Invalid choice. Please enter 1, 2 or 3.");
             }
         }
-        // Player action selection
+    }
+    // Player action selection
 
 
-        public Action getPlayerAction(Player player, BattleContext context) {
-            while (true) {
-                System.out.println("Choose an action:");
-                System.out.println("1. Basic Attack");
-                System.out.println("2. Defend");
-                System.out.println("3. Use Item");
-                System.out.println("4. Special Skill");
-                System.out.print("Enter choice: ");
+    public Action getPlayerAction(Player player, BattleContext context) {
+        while (true) {
+            System.out.println("Choose an action:");
+            System.out.println("1. Basic Attack");
+            System.out.println("2. Defend");
+            System.out.println("3. Use Item");
+            System.out.println("4. Special Skill");
+            System.out.print("Enter choice: ");
 
-                int choice = scanner.nextInt();
+            int choice = scanner.nextInt();
 
-                switch (choice) {
-                    case 1:
-                        // Choose first alive enemy
-                        return new BasicAttack(context.getAliveEnemies().get(0));
+            switch (choice) {
+                case 1:
+                    // Choose first alive enemy
+                    return new BasicAttack(context.getAliveEnemies().get(0));
 
-                    case 2:
-                        return new Defend();
+                case 2:
+                    return new Defend();
 
-                    case 3:
-                        if (player.hasItems()) {
-                            // Use first item
-                            return new UseItem(player.removeItem(0));
-                        } else {
-                            System.out.println("No items available.");
-                            break;
-                        }
+                case 3:
+                    if (player.hasItems()) {
+                        // Use first item
+                        return new UseItem(player.removeItem(0));
+                    } else {
+                        System.out.println("No items available.");
+                        break;
+                    }
 
-                    case 4:
-                        if (player.isSpecialReady()) {
-                            return player.getSpecialSkill();
-                        } else {
-                            System.out.println("Special skill is on cooldown.");
-                            break;
-                        }
+                case 4:
+                    if (player.isSpecialReady()) {
+                        return player.getSpecialSkill();
+                    } else {
+                        System.out.println("Special skill is on cooldown.");
+                        break;
+                    }
 
-                    default:
-                        System.out.println("Invalid choice. Please enter 1–4.");
-                }
+                default:
+                    System.out.println("Invalid choice. Please enter 1–4.");
             }
         }
+    }
+}
