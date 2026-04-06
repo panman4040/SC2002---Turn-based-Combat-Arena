@@ -1,6 +1,5 @@
 package arena.domain.effect;
 
-import arena.domain.entity.Combatant;
 
 public class DefendBuff extends StatusEffect {
 

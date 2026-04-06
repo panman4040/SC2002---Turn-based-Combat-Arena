@@ -10,8 +10,13 @@ public abstract class SpecialSkill implements Action {
         this.cooldownDuration = cooldownDuration;
     }
 
+    public int getCooldownDuration() {
+        return cooldownDuration;
+    }
+
     @Override
     public String getName() {
         return name;
     }
 }
+ 

@@ -18,9 +18,9 @@ public class BasicAttack implements Action {
         int def    = target.getEffectiveDefense();
         int damage = Math.max(0, atk - def);
 
-        int hpBefore = target.getCurrentHp();
+        int hpBefore = target.getHp();
         target.takeDamage(damage);
-        int hpAfter = target.getCurrentHp();
+        int hpAfter = target.getHp();
 
         // need to decide what to return for string
         return String.format(

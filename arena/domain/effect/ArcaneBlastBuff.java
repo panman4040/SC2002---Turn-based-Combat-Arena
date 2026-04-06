@@ -1,13 +1,11 @@
 package arena.domain.effect;
 
-import arena.domain.entity.Combatant;
-
 public class ArcaneBlastBuff extends StatusEffect {
 
     private final int attackBonus;
 
     public ArcaneBlastBuff(int attackBonus) {
-        super(1); // lasts one round
+        super(1000); // lasts one round
         this.attackBonus = attackBonus;
     }
 

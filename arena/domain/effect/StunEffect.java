@@ -1,8 +1,6 @@
 package arena.domain.effect;
 
-import arena.domain.entity.Combatant;
-
-ic class StunEffect extends StatusEffect {
+public class StunEffect extends StatusEffect {
 
     public StunEffect(int duration) {
         super(duration);
