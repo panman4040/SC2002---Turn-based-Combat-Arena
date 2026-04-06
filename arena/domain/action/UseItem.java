@@ -5,14 +5,23 @@ import arena.domain.item.Item;
 import arena.engine.BattleContext;
 
 public class UseItem implements Action {
-    private Item item;
 
-    public UseItem(Item item) {
-        this.item = item;
+    private final String name;
+    private final Item itemToUse;
+
+    public UseItem(Item itemToUse) {
+        this.itemToUse = itemToUse;
+        this.name = itemToUse.getName();
     }
 
     @Override
-    public void execute(Combatant actor, Combatant target, BattleContext context) {
-        item.use(actor, context);
+    public String execute(Combatant user, BattleContext context) {
+        itemToUse.use(user, context);
+        return String.format("%s uses %s!", user.getName(), name);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
