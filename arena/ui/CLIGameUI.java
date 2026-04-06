@@ -19,23 +19,6 @@ public class CLIGameUI implements GameUI {
         System.out.println(message);
     }
 
-    // Match BattleEngine from here
-    // For (runBattle)
-
-    public void displayStartingInfo() {
-        System.out.println("=== Battle Start ===");
-    }
-
-    // For (runBattle)
-    public void displayBackupSpawn() {
-        System.out.println("Backup enemies have appeared!");
-    }
-
-    //  Round number for (runRound)
-    public void displayRoundNumber(int roundNumber) {
-        System.out.println("\n=== Round " + roundNumber + " ===");
-    }
-
     // Battle State for (runRound)
     public void displayBattleState(BattleContext context){
         System.out.println("=== Battle State ===");
@@ -44,7 +27,6 @@ public class CLIGameUI implements GameUI {
 
         //enemies info - Name,Hp, MaxHp to be included soon
     }
-
     //  Turn order for (runRound)
     public void displayTurnOrder(List<Combatant> combatants) {
         System.out.print("Turn Order: ");
@@ -57,22 +39,6 @@ public class CLIGameUI implements GameUI {
         }
         System.out.println();
     }
-
-    // Skipped turn (processTurn)
-    public void displayTurnSkipped(Combatant combatant) {
-        System.out.println(combatant.getName() + " is unable to act. Turn skipped.");
-    }
-
-    // Turn result (processTurn)
-    public void displayTurnResult(String result) {
-        System.out.println(result);
-    }
-
-    // End of round (runRound)
-    public void displayEndOfRound() {
-        System.out.println("=== End of Round ===");
-    }
-
     // User Input
     // Difficulty selection
     public Level chooseDifficulty() {
