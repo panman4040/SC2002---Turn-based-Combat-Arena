@@ -34,7 +34,7 @@ public class CLIGameUI implements GameUI {
 
         //for player
         Player player = context.getPlayer();
-        System.out.print(player.getName() + " HP: " + "/" + player.getMaxHp());
+        System.out.print(player.getName() + " HP: " + player.getHp() + "/" + player.getMaxHp());
 
         //for enemy if alive
         for (Combatant enemy : context.getAliveEnemies()) {
@@ -53,7 +53,7 @@ public class CLIGameUI implements GameUI {
             }
         }
         System.out.print(" | Power Stone: " + powerStoneCount);
-        System.out.print(" | Potion " + potionCount);
+        System.out.print(" | Potion: " + potionCount);
 
         System.out.print(" | Special Skills Cooldown: " + player.getSpecialSkill().getCooldownDuration() + " round");
         System.out.println(); // now getCooldownDuration is not under player
@@ -74,6 +74,7 @@ public class CLIGameUI implements GameUI {
 
     // User Input
     // Difficulty selection
+    @Override
     public Level chooseDifficulty() {
         while (true) {
             System.out.println("Choose difficulty:");
@@ -82,6 +83,7 @@ public class CLIGameUI implements GameUI {
             System.out.println("3. Hard");
             System.out.print("Enter choice: ");
             int choice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -100,7 +102,7 @@ public class CLIGameUI implements GameUI {
     }
     // Player action selection
 
-
+    @Override
     public Action getPlayerAction(Player player, BattleContext context) {
         while (true) {
             System.out.println("Choose an action:");
@@ -111,6 +113,7 @@ public class CLIGameUI implements GameUI {
             System.out.print("Enter choice: ");
 
             int choice = scanner.nextInt();
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
