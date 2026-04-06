@@ -30,7 +30,7 @@ public class CLIGameUI implements GameUI {
     // Battle State for (runRound)
     public void displayBattleState(BattleContext context) {
         System.out.println("=== Battle State ===");
-        System.out.print("End of Round" + context.getRoundNumber() + ": ");
+        System.out.print("End of Round " + context.getRoundNumber() + ": ");
 
         //for player
         Player player = context.getPlayer();
