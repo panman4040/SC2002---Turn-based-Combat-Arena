@@ -22,7 +22,6 @@ public class BattleEngine {
     public boolean runBattle() {
         // UI PLACEHOLDER: UI displays starting information (Player, Items, Level,
         // Stats) here
-        ui.displayMessage("=== Battle Start ===");
 
         // Runs round continuously until either player die or all enemies die
         while (!context.isPlayerDead() && !context.isAllEnemiesDead()) {
