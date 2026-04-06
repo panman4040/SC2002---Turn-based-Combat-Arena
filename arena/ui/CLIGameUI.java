@@ -57,7 +57,7 @@ public class CLIGameUI implements GameUI {
         System.out.print(" | Potion " + potionCount);
 
         System.out.print(" | Special Skills Cooldown: " + player.getCooldownDuration() + " round");
-        System.out.println(); // Impt: getter for special skills cooldown is not present in player. For now assume itll be added
+        System.out.println(); // now getCooldownDuration is not under player
     }
     //  Turn order for (runRound)
     public void displayTurnOrder(List<Combatant> combatants) {
@@ -99,10 +99,9 @@ public class CLIGameUI implements GameUI {
         // Player action selection
 
 
-        public Action getPlayerAction (Player player, BattleContext context){
-
+        public Action getPlayerAction(Player player, BattleContext context) {
             while (true) {
-                System.out.println("Choose action:");
+                System.out.println("Choose an action:");
                 System.out.println("1. Basic Attack");
                 System.out.println("2. Defend");
                 System.out.println("3. Use Item");
@@ -112,66 +111,32 @@ public class CLIGameUI implements GameUI {
                 int choice = scanner.nextInt();
 
                 switch (choice) {
-                    case 1: {
-                        List<Enemy> enemies = context.getAliveEnemies();
-
-                        if (enemies.isEmpty()) {
-                            System.out.println("No enemies available.");
-                            break;
-                        }
-
-                        System.out.println("Choose target:");
-                        for (int i = 0; i < enemies.size(); i++) {
-                            Enemy enemy = enemies.get(i);
-                            System.out.println((i + 1) + ". " + enemy.getName() + " HP: " + enemy.getHp());
-                        }
-
-                        int targetChoice = scanner.nextInt();
-
-                        if (targetChoice >= 1 && targetChoice <= enemies.size()) {
-                            return new BasicAttack(enemies.get(targetChoice - 1));
-                        } else {
-                            System.out.println("Invalid target.");
-                        }
-                        break;
-                    }
+                    case 1:
+                        // Choose first alive enemy
+                        return new BasicAttack(context.getAliveEnemies().get(0));
 
                     case 2:
                         return new Defend();
 
-                    case 3: {
-                        List<Item> items = player.getItems();
-
-                        if (items.isEmpty()) {
+                    case 3:
+                        if (player.hasItems()) {
+                            // Use first item
+                            return new UseItem(player.removeItem(0));
+                        } else {
                             System.out.println("No items available.");
                             break;
                         }
 
-                        System.out.println("Choose item:");
-                        for (int i = 0; i < items.size(); i++) {
-                            System.out.println((i + 1) + ". " + items.get(i).getName());
-                        }
-
-                        int itemChoice = scanner.nextInt();
-
-                        if (itemChoice >= 1 && itemChoice <= items.size()) {
-                            return new UseItem(items.get(itemChoice - 1));
-                        } else {
-                            System.out.println("Invalid item.");
-                        }
-                        break;
-                    }
-
                     case 4:
                         if (player.isSpecialReady()) {
-                            return player.getSpecialSkill(); // must be compatible with Action
+                            return player.getSpecialSkill();
                         } else {
                             System.out.println("Special skill is on cooldown.");
+                            break;
                         }
-                        break;
 
                     default:
-                        System.out.println("Invalid choice. Enter 1-4.");
+                        System.out.println("Invalid choice. Please enter 1–4.");
                 }
             }
         }
