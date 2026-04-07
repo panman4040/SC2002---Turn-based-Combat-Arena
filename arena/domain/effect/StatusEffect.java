@@ -10,6 +10,8 @@ public abstract class StatusEffect {
         this.duration = duration;
     }
 
+    // Safeguard method for future status effects where
+    // effects are applied continuously, e.g: poison, healing, etc.
     public void apply(Combatant target) { /* no-op by default */ }
 
     public boolean preventAction() { return false; }
