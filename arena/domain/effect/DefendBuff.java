@@ -5,8 +5,8 @@ public class DefendBuff extends StatusEffect {
 
     private final int defenseBonus;
 
-    public DefendBuff(int defenseBonus) {
-        super(1); // lasts one round
+    public DefendBuff(int duration, int defenseBonus) {
+        super(duration); 
         this.defenseBonus = defenseBonus;
     }
 
