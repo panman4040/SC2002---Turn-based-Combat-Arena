@@ -1,18 +1,17 @@
 package arena.engine;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import arena.domain.entity.Enemy;
 import arena.domain.entity.Goblin;
 import arena.domain.entity.Wolf;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Level {
-    private int levelNumber;
-    private String difficultyName;
-    private List<Enemy> initialEnemies;
-    private List<Enemy> backupEnemies;
+    private final int levelNumber;
+    private final String difficultyName;
+    private final List<Enemy> initialEnemies;
+    private final List<Enemy> backupEnemies;
 
     private Level(int levelNumber, String difficultyName,
                   List<Enemy> initialEnemies, List<Enemy> backupEnemies) {
@@ -26,8 +25,9 @@ public class Level {
         List<Enemy> initialEnemies = new ArrayList<>();
         List<Enemy> backupEnemies = new ArrayList<>();
 
-        initialEnemies.add(new Goblin());
-        initialEnemies.add(new Wolf());
+        initialEnemies.add(new Goblin("Goblin A"));
+        initialEnemies.add(new Goblin("Goblin B"));
+        initialEnemies.add(new Goblin("Goblin C"));
 
         return new Level(1, "Easy", initialEnemies, backupEnemies);
     }
@@ -36,10 +36,11 @@ public class Level {
         List<Enemy> initialEnemies = new ArrayList<>();
         List<Enemy> backupEnemies = new ArrayList<>();
 
-        initialEnemies.add(new Goblin());
-        initialEnemies.add(new Wolf());
+        initialEnemies.add(new Goblin("Goblin A"));
+        initialEnemies.add(new Wolf("Wolf A"));
 
-        backupEnemies.add(new Goblin());
+        backupEnemies.add(new Wolf("Wolf B"));
+        backupEnemies.add(new Wolf("Wolf C"));
 
         return new Level(2, "Medium", initialEnemies, backupEnemies);
     }
@@ -48,11 +49,12 @@ public class Level {
         List<Enemy> initialEnemies = new ArrayList<>();
         List<Enemy> backupEnemies = new ArrayList<>();
 
-        initialEnemies.add(new Goblin());
-        initialEnemies.add(new Goblin());
+        initialEnemies.add(new Goblin("Goblin A"));
+        initialEnemies.add(new Goblin("Goblin B"));
 
-        backupEnemies.add(new Wolf());
-        backupEnemies.add(new Wolf());
+        backupEnemies.add(new Goblin("Goblin C"));
+        backupEnemies.add(new Wolf("Wolf A"));
+        backupEnemies.add(new Wolf("Wolf B"));
 
         return new Level(3, "Hard", initialEnemies, backupEnemies);
     }
@@ -65,12 +67,14 @@ public class Level {
         return difficultyName;
     }
 
+    // Return COPY instead of original
     public List<Enemy> getInitialEnemies() {
-        return initialEnemies;
+        return new ArrayList<>(initialEnemies);
     }
 
+    // Return COPY instead of original
     public List<Enemy> getBackupEnemies() {
-        return backupEnemies;
+        return new ArrayList<>(backupEnemies);
     }
 }
 
