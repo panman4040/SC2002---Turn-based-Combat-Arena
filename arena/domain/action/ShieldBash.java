@@ -21,9 +21,9 @@ public class ShieldBash extends SpecialSkill {
         int rawDamage = (int) (user.getEffectiveAttack() * DAMAGE_MULTIPLIER);
         int netDamage = Math.max(0, rawDamage - target.getEffectiveDefense());
 
-        int hpBefore = target.getCurrentHp();
+        int hpBefore = target.getHp();
         target.takeDamage(netDamage);
-        int hpAfter  = target.getCurrentHp();
+        int hpAfter  = target.getHp();
 
         boolean stunned = false;
         if (target.isAlive()) {
