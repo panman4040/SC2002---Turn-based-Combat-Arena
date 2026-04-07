@@ -3,9 +3,10 @@ package arena.domain.effect;
 public class ArcaneBlastBuff extends StatusEffect {
 
     private final int attackBonus;
+    private static final int PERMANENT = Integer.MAX_VALUE;
 
     public ArcaneBlastBuff(int attackBonus) {
-        super(1000); // lasts one round
+        super(PERMANENT); // lasts until end of level
         this.attackBonus = attackBonus;
     }
 
