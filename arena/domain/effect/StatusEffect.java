@@ -4,7 +4,7 @@ import arena.domain.entity.Combatant;
 
 public abstract class StatusEffect {
 
-    protected int duration;
+    private int duration;
 
     protected StatusEffect(int duration) {
         this.duration = duration;
@@ -28,4 +28,8 @@ public abstract class StatusEffect {
     }
 
     public abstract String getName();
+
+    public int getDuration() {
+        return duration;
+    }
 }
