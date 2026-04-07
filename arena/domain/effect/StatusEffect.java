@@ -20,6 +20,8 @@ public abstract class StatusEffect {
 
     public int modifyAttack(int baseAttack) { return baseAttack; }
 
+    public int modifyIncomingDamage(int damage) { return damage; }
+
 
     public void tick() {
         duration--;
