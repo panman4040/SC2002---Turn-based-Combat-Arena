@@ -1,18 +1,14 @@
 package arena.ui;
-import java.util.List;
-import java.util.Scanner;
-
-import arena.domain.entity.Combatant;
-import arena.domain.entity.Player;
-
 import arena.domain.action.Action;
 import arena.domain.action.BasicAttack;
 import arena.domain.action.Defend;
 import arena.domain.action.UseItem;
-import arena.domain.item.Item;
-
+import arena.domain.entity.Combatant;
+import arena.domain.entity.Player;
 import arena.engine.BattleContext;
 import arena.engine.Level;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class CLIGameUI implements GameUI {
@@ -23,11 +19,13 @@ public class CLIGameUI implements GameUI {
         scanner = new Scanner(System.in);
     }
 
+    @Override
     public void displayMessage(String message) {
         System.out.println(message);
     }
 
     // Battle State for (runRound)
+    @Override
     public void displayBattleState(BattleContext context) {
         System.out.println("=== Battle State ===");
         System.out.print("End of Round " + context.getRoundNumber() + ": ");
@@ -60,6 +58,7 @@ public class CLIGameUI implements GameUI {
     }
 
     //  Turn order for (runRound)
+    @Override
     public void displayTurnOrder(List<Combatant> combatants) {
         System.out.print("Turn Order: ");
         for (int i = 0; i < combatants.size(); i++) {
