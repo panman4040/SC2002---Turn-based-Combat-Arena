@@ -11,8 +11,8 @@ public class DefendBuff extends StatusEffect {
     }
 
     @Override
-    public int modifyIncomingDamage(int damage) {
-        return Math.max(0, damage - defenseBonus);
+    public int modifyDefense(int baseDefense) {
+        return baseDefense + defenseBonus;
     }
 
     @Override

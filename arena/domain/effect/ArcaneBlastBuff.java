@@ -11,8 +11,8 @@ public class ArcaneBlastBuff extends StatusEffect {
     }
 
     @Override
-    public int modifyAttack(int attack) {
-        return attack + attackBonus;
+    public int modifyAttack(int baseAttack) {
+        return baseAttack + attackBonus;
     }
 
     @Override

@@ -16,16 +16,16 @@ public abstract class StatusEffect {
 
     public boolean preventAction() { return false; }
 
-    public int modifyIncomingDamage(int damage) { return damage; }
+    public int modifyDefense(int baseDefense) { return baseDefense; }
 
-    public int modifyAttack(int attack) { return attack; }
+    public int modifyAttack(int baseAttack) { return baseAttack; }
 
 
-    public final void tick() {
+    public void tick() {
         duration--;
     }
 
-    public final boolean isExpired() {
+    public boolean isExpired() {
         return duration <= 0;
     }
 
