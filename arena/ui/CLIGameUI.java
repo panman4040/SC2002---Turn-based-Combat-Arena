@@ -2,9 +2,12 @@ package arena.ui;
 import arena.domain.action.Action;
 import arena.domain.action.BasicAttack;
 import arena.domain.action.Defend;
+import arena.domain.action.ShieldBash;
 import arena.domain.action.UseItem;
 import arena.domain.entity.Combatant;
+import arena.domain.entity.Enemy;
 import arena.domain.entity.Player;
+import arena.domain.entity.Warrior;
 import arena.engine.BattleContext;
 import arena.engine.Level;
 import java.util.List;
@@ -42,19 +45,23 @@ public class CLIGameUI implements GameUI {
         //items
         int powerStoneCount = 0;
         int potionCount = 0;
+        int smokeBombCount = 0;
 
         for (var item : player.getItems()) {
             if (item.getName().equals("Power Stone")) {
                 powerStoneCount++;
             } else if (item.getName().equals("Potion")) {
                 potionCount++;
+            } else if (item.getName().equals("Smoke Bomb")) {
+                smokeBombCount++;
             }
         }
-        System.out.print(" | Power Stone: " + powerStoneCount);
         System.out.print(" | Potion: " + potionCount);
+        System.out.print(" | Power Stone: " + powerStoneCount);
+        System.out.print(" | Smoke Bomb: " + smokeBombCount);
 
-        System.out.print(" | Special Skills Cooldown: " + player.getSpecialSkill().getCooldownDuration() + " round");
-        System.out.println(); // now getCooldownDuration is not under player
+        System.out.print(" | Special Skills Cooldown: " + player.getSpecialCooldown() + " rounds");
+        System.out.println();
     }
 
     //  Turn order for (runRound)
@@ -65,7 +72,7 @@ public class CLIGameUI implements GameUI {
             Combatant c = combatants.get(i);
             System.out.print(c.getName() + " (SPD " + c.getSpeed() + ")");
             if (i < combatants.size() - 1) {
-                System.out.print(" -> ");
+                System.out.print(" → ");
             }
         }
         System.out.println();
@@ -99,16 +106,59 @@ public class CLIGameUI implements GameUI {
             }
         }
     }
-    // Player action selection
 
+    // Helper: let player choose an enemy target
+    private Enemy chooseTarget(BattleContext context) {
+        List<Enemy> enemies = context.getAliveEnemies();
+        if (enemies.size() == 1) {
+            return enemies.get(0);
+        }
+        System.out.println("Choose a target:");
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy e = enemies.get(i);
+            System.out.printf("  %d. %s (HP: %d)%n", i + 1, e.getName(), e.getHp());
+        }
+        while (true) {
+            System.out.print("Enter choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            if (choice >= 1 && choice <= enemies.size()) {
+                return enemies.get(choice - 1);
+            }
+            System.out.println("Invalid choice. Please enter 1–" + enemies.size() + ".");
+        }
+    }
+
+    // Helper: let player choose an item
+    private int chooseItem(Player player) {
+        List<? extends arena.domain.item.Item> items = player.getItems();
+        if (items.size() == 1) {
+            return 0;
+        }
+        System.out.println("Choose an item:");
+        for (int i = 0; i < items.size(); i++) {
+            System.out.printf("  %d. %s%n", i + 1, items.get(i).getName());
+        }
+        while (true) {
+            System.out.print("Enter choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            if (choice >= 1 && choice <= items.size()) {
+                return choice - 1;
+            }
+            System.out.println("Invalid choice. Please enter 1–" + items.size() + ".");
+        }
+    }
+
+    // Player action selection
     @Override
     public Action getPlayerAction(Player player, BattleContext context) {
         while (true) {
             System.out.println("Choose an action:");
             System.out.println("1. Basic Attack");
             System.out.println("2. Defend");
-            System.out.println("3. Use Item");
-            System.out.println("4. Special Skill");
+            System.out.println("3. Use Item" + (!player.hasItems() ? " (none left)" : ""));
+            System.out.println("4. Special Skill" + (!player.isSpecialReady() ? " (cooldown: " + player.getSpecialCooldown() + ")" : ""));
             System.out.print("Enter choice: ");
 
             int choice = scanner.nextInt();
@@ -116,16 +166,16 @@ public class CLIGameUI implements GameUI {
 
             switch (choice) {
                 case 1:
-                    // Choose first alive enemy
-                    return new BasicAttack(context.getAliveEnemies().get(0));
+                    Enemy target = chooseTarget(context);
+                    return new BasicAttack(target);
 
                 case 2:
                     return new Defend();
 
                 case 3:
                     if (player.hasItems()) {
-                        // Use first item
-                        return new UseItem(player.removeItem(0));
+                        int itemIndex = chooseItem(player);
+                        return new UseItem(player.removeItem(itemIndex));
                     } else {
                         System.out.println("No items available.");
                         break;
@@ -133,7 +183,14 @@ public class CLIGameUI implements GameUI {
 
                 case 4:
                     if (player.isSpecialReady()) {
-                        return player.getSpecialSkill();
+                        // Warrior needs a target for Shield Bash
+                        if (player instanceof Warrior) {
+                            Enemy specialTarget = chooseTarget(context);
+                            return new ShieldBash(specialTarget);
+                        } else {
+                            // Wizard's Arcane Blast hits all enemies — no target needed
+                            return player.getSpecialSkill();
+                        }
                     } else {
                         System.out.println("Special skill is on cooldown.");
                         break;
@@ -145,3 +202,4 @@ public class CLIGameUI implements GameUI {
         }
     }
 }
+

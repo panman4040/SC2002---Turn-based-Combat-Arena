@@ -7,15 +7,15 @@ import arena.engine.BattleContext;
 
 public class Defend implements Action {
 
-    private static final int DEFENSE_BONUS = 15;
+    private static final int DEFENSE_BONUS = 10;
+    private static final int DURATION = 2; // current round + next round
 
     @Override
     public String execute(Combatant source, BattleContext context) {
-        source.addStatusEffect(new DefendBuff(DEFENSE_BONUS));
-        //need determine string format
+        source.addStatusEffect(new DefendBuff(DURATION, DEFENSE_BONUS));
         return String.format(
-            "%s takes a defensive stance! (+" + DEFENSE_BONUS + " DEF this round)",
-            source.getName()
+            "%s takes a defensive stance! (+%d DEF for %d rounds)",
+            source.getName(), DEFENSE_BONUS, DURATION
         );
     }
 

@@ -6,35 +6,39 @@ import arena.engine.BattleContext;
 
 public class ShieldBash extends SpecialSkill {
 
-    private static final double DAMAGE_MULTIPLIER = 1.2;
-    private static final int    STUN_DURATION     = 1;
+    private static final int STUN_DURATION = 2; // current turn + next turn
 
     private final Combatant target;
 
     public ShieldBash(Combatant target) {
-        super("Shield Bash", 2);
+        super("Shield Bash", 3); // cooldown 3 turns including current
         this.target = target;
     }
 
     @Override
     public String execute(Combatant user, BattleContext context) {
-        int rawDamage = (int) (user.getEffectiveAttack() * DAMAGE_MULTIPLIER);
-        int netDamage = Math.max(0, rawDamage - target.getEffectiveDefense());
+        // Shield Bash deals BasicAttack damage (no multiplier per spec)
+        int atk = user.getEffectiveAttack();
+        int def = target.getEffectiveDefense();
+        int damage = Math.max(0, atk - def);
 
         int hpBefore = target.getHp();
-        target.takeDamage(netDamage);
-        int hpAfter  = target.getHp();
+        target.takeDamage(damage);
+        int hpAfter = target.getHp();
 
-        boolean stunned = false;
+        StringBuilder result = new StringBuilder();
+        result.append(String.format(
+            "%s → Shield Bash → %s: HP %d → %d (dmg: %d−%d=%d)",
+            user.getName(), target.getName(), hpBefore, hpAfter, atk, def, damage
+        ));
+
         if (target.isAlive()) {
             target.addStatusEffect(new StunEffect(STUN_DURATION));
-            stunned = true;
+            result.append(String.format(" | %s STUNNED (%d turns)", target.getName(), STUN_DURATION));
+        } else {
+            result.append(String.format(" | %s ELIMINATED", target.getName()));
         }
 
-        return String.format(
-            "%s SHIELD BASHES %s! HP %d → %d (%d dmg%s)",
-            user.getName(), target.getName(), hpBefore, hpAfter, netDamage,
-            stunned ? ", STUNNED for 1 turn!" : ", target felled!"
-        );
+        return result.toString();
     }
 }

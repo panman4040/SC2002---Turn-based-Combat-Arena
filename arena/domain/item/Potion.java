@@ -6,7 +6,7 @@ import arena.engine.BattleContext;
 
 public class Potion implements Item {
 
-    private static final int HEAL_AMOUNT = 50;
+    private static final int HEAL_AMOUNT = 100;
 
     public Potion() {}
 

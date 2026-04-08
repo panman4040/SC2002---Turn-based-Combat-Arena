@@ -45,6 +45,10 @@ public abstract class Player extends Combatant {
         return specialCooldown == 0;
     }
 
+    public int getSpecialCooldown() {
+        return specialCooldown;
+    }
+
     @Override
     public void triggerSpecial(BattleContext context) {
         ((Action) specialSkill).execute(this, context);

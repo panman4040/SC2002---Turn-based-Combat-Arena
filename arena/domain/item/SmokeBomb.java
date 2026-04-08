@@ -11,7 +11,8 @@ public class SmokeBomb implements Item {
 
     @Override
     public void use(Combatant user, BattleContext context) {
-        user.addStatusEffect(new SmokeBombInvulnerability());
+        // Invulnerable for current turn + next turn = 2 turns
+        user.addStatusEffect(new SmokeBombInvulnerability(2));
     }
 
     @Override

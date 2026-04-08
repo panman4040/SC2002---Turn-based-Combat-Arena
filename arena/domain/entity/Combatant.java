@@ -69,7 +69,11 @@ public abstract class Combatant {
     }
 
     public int getEffectiveDefense() {
-        return baseDefense;
+        int defense = baseDefense;
+        for (StatusEffect effect : statusEffects) {
+            defense = effect.modifyDefense(defense);
+        }
+        return defense;
     }
 
     public String getName() {
@@ -92,7 +96,7 @@ public abstract class Combatant {
         return statusEffects;
     }
 
-    public void reduceSpecialCooldown();
+    public abstract void reduceSpecialCooldown();
 
     public abstract void triggerSpecial(BattleContext context);
 

@@ -8,45 +8,48 @@ import arena.engine.BattleContext;
 
 public class ArcaneBlast extends SpecialSkill {
 
-    private static final int ATTACK_BONUS = 10;
+    private static final int ATTACK_BONUS_PER_KILL = 10;
 
     public ArcaneBlast() {
-        super("Arcane Blast", 3);
+        super("Arcane Blast", 3); // cooldown 3 turns including current
     }
 
     @Override
     public String execute(Combatant user, BattleContext context) {
-
-        int atk = user.getEffectiveAttack(); 
-
         StringBuilder result = new StringBuilder();
+        result.append(String.format("%s → Arcane Blast → All Enemies: ", user.getName()));
 
-        result.append(
-            "Wizard --> Arcane Blast --> All Enemies: "
-            );
+        boolean first = true;
+        for (Enemy enemy : context.getAliveEnemies()) {
+            if (!first) {
+                result.append(" | ");
+            }
+            first = false;
 
-        for(Enemy enemy : context.getAliveEnemies()){
-            int def    = enemy.getEffectiveDefense();
+            // Re-fetch ATK each iteration so kills within the same blast stack
+            int atk = user.getEffectiveAttack();
+            int def = enemy.getEffectiveDefense();
             int damage = Math.max(0, atk - def);
 
             int hpBefore = enemy.getHp();
             enemy.takeDamage(damage);
-            int hpAfter  = enemy.getHp();
+            int hpAfter = enemy.getHp();
+
             result.append(String.format(
-            "%s HP: %d -> %d:%n",
-            enemy.getName(), hpBefore, hpAfter
+                "%s HP: %d → %d (dmg: %d−%d=%d)",
+                enemy.getName(), hpBefore, hpAfter, atk, def, damage
             ));
-            if (!enemy.isAlive()){
-                result.append(" X ELIMINATED");
-            }
-            result.append(String.format("(dmg:%d-%d=%d)", atk, def, damage));
-            if (!enemy.isAlive()){
-                result.append(String.format(" | ATK: %d → %d (+10 per Arcane Blast kill)", atk, atk +10));
-                user.addStatusEffect(new ArcaneBlastBuff(ATTACK_BONUS));
-            }
 
+            if (!enemy.isAlive()) {
+                result.append(" ✗ ELIMINATED");
+                user.addStatusEffect(new ArcaneBlastBuff(ATTACK_BONUS_PER_KILL));
+                result.append(String.format(
+                    " | ATK: %d → %d (+%d per Arcane Blast kill)",
+                    atk, user.getEffectiveAttack(), ATTACK_BONUS_PER_KILL
+                ));
+            }
         }
-        return result.toString().trim();
-    }
 
+        return result.toString();
+    }
 }
