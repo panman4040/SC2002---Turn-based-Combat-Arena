@@ -1,21 +1,20 @@
 package arena.domain.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import arena.domain.action.Action;
 import arena.domain.effect.StatusEffect;
 import arena.engine.BattleContext;
 import arena.ui.GameUI;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Combatant {
-    private String name;
+    private final String name;
     private int hp;
-    private int maxHp;
-    private int baseAttack;
-    private int baseDefense;
-    private int speed;
-    private List<StatusEffect> statusEffects;
+    private final int maxHp;
+    private final int baseAttack;
+    private final int baseDefense;
+    private final int speed;
+    private final List<StatusEffect> statusEffects;
 
     protected Combatant(String name, int maxHp, int baseAttack, int baseDefense, int speed) {
         this.name = name;
@@ -96,7 +95,7 @@ public abstract class Combatant {
         return statusEffects;
     }
 
-    public abstract void reduceSpecialCooldown();
+    public void reduceSpecialCooldown() { /* no-op by default */};
 
     public abstract void triggerSpecial(BattleContext context);
 

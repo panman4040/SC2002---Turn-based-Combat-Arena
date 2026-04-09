@@ -1,16 +1,15 @@
 package arena.engine;
 
+import arena.domain.entity.Combatant;
+import arena.domain.entity.Enemy;
+import arena.domain.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import arena.domain.entity.Combatant;
-import arena.domain.entity.Player;
-import arena.domain.entity.Enemy;
-
 public class BattleContext {
-    private Player player;
-    private List<Enemy> activeEnemies;
-    private List<Enemy> backupEnemies;
+    private final Player player;
+    private final List<Enemy> activeEnemies;
+    private final List<Enemy> backupEnemies;
     private int roundNumber;
 
     public BattleContext(Player player, List<Enemy> activeEnemies, List<Enemy> backupEnemies) {
@@ -28,6 +27,8 @@ public class BattleContext {
         return new ArrayList<>(activeEnemies);
     }
 
+    // This method cleans up the activeEnemies, get rid of
+    // dead enemies
     public void removeDead() {
         List<Enemy> temp = new ArrayList<>();
 
@@ -65,9 +66,10 @@ public class BattleContext {
         return !player.isAlive();
     }
 
-    // removeDead() MUST BE CALLED first before this function
+    // This method can now be called regardless of whether removeDead()
+    // is called
     public boolean isAllEnemiesDead() {
-        return activeEnemies.isEmpty();
+        return activeEnemies.stream().noneMatch(Enemy::isAlive);
     }
 
     public int getRoundNumber() {

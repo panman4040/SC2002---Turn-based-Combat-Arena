@@ -1,16 +1,15 @@
 package arena.engine;
 
-import java.util.List;
-
+import arena.domain.action.Action;
 import arena.domain.effect.StatusEffect;
 import arena.domain.entity.Combatant;
-import arena.domain.action.Action; 
 import arena.ui.GameUI;
+import java.util.List;
 
 public class BattleEngine {
-    private BattleContext context;
-    private TurnOrderStrategy turnStrategy;
-    private GameUI ui;
+    private final BattleContext context;
+    private final TurnOrderStrategy turnStrategy;
+    private final GameUI ui;
 
     public BattleEngine(BattleContext context, TurnOrderStrategy turnStrategy, GameUI ui) {
         this.context = context;
@@ -74,6 +73,10 @@ public class BattleEngine {
         if (!combatant.isAlive()) return;
 
         ui.displayMessage("\n" + combatant.getName() + "'s turn:");
+
+        // Decrement combatant's special skill cooldown
+        combatant.reduceSpecialCooldown();
+
         // Apply turn effects before combatant is allowed to do anything
         // e.g: ArcaneBlastBuff
         combatant.applyEffects();
@@ -105,9 +108,6 @@ public class BattleEngine {
         String result = action.execute(combatant, context);
         ui.displayMessage(result);
         // e.g: Goblin A → BasicAttack → Warrior: HP: 260 → 245 (dmg: 35−20=15)
-
-        // Decrement combatant's special skill cooldown
-        combatant.reduceSpecialCooldown();
     }
 
     // End-of-round effect ticking
