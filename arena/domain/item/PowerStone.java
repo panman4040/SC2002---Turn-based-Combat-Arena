@@ -8,9 +8,10 @@ public class PowerStone implements Item {
     public PowerStone() {}
 
     @Override
-    public void use(Combatant user, BattleContext context) {
+    public String use(Combatant user, BattleContext context) {
         // Trigger the special skill effect once without affecting cooldown
         user.triggerSpecial(context);
+        return "Special Skill Activates!";
     }
 
     @Override

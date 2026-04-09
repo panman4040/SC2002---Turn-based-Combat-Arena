@@ -6,7 +6,7 @@ import arena.engine.BattleContext;
 
 public interface Item {
 
-    void use(Combatant user, BattleContext context);
+    String use(Combatant user, BattleContext context);
 
     String getName();
 }

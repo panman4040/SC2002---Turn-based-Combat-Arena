@@ -11,8 +11,11 @@ public class Potion implements Item {
     public Potion() {}
 
     @Override
-    public void use(Combatant user, BattleContext context) {
+    public String use(Combatant user, BattleContext context) {
+        int hpBefore = user.getHp();
         user.heal(HEAL_AMOUNT);
+        int hpAfter = user.getHp();
+        return String.format("HP: %d → %d (+%d)", hpBefore, hpAfter, hpAfter - hpBefore);
     }
 
     @Override
