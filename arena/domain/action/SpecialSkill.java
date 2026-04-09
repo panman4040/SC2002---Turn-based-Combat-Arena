@@ -1,5 +1,7 @@
 package arena.domain.action;
 
+import arena.domain.entity.Combatant;
+
 public abstract class SpecialSkill implements Action {
 
     private final String name;
@@ -8,6 +10,14 @@ public abstract class SpecialSkill implements Action {
     protected SpecialSkill(String name, int cooldownDuration) {
         this.name             = name;
         this.cooldownDuration = cooldownDuration;
+    }
+
+    public boolean requireTarget() { 
+        return false;
+    }
+
+    public Action withTarget(Combatant target) {
+        return this;
     }
 
     public int getCooldownDuration() {

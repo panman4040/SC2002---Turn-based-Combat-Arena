@@ -10,9 +10,25 @@ public class ShieldBash extends SpecialSkill {
 
     private final Combatant target;
 
+    // No argument constructor
+    public ShieldBash() {
+        super("Shield Bash", 3);
+        this.target = null;
+    }
+
     public ShieldBash(Combatant target) {
         super("Shield Bash", 3); // cooldown 3 turns including current
         this.target = target;
+    }
+
+    @Override
+    public boolean requireTarget() {
+        return true;
+    }
+
+    @Override
+    public Action withTarget(Combatant target) {
+        return new ShieldBash(target);
     }
 
     @Override
