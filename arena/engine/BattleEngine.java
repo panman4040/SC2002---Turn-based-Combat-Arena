@@ -20,8 +20,8 @@ public class BattleEngine {
     
     // Return true if player wins, false if loses
     public boolean runBattle() {
-        // UI PLACEHOLDER: UI displays starting information (Player, Items, Level,
-        // Stats) here
+        ui.displayMessage("=== Battle Start ===");
+        ui.displayMessage("Round 1 begins!");
 
         // Runs round continuously until either player die or all enemies die
         while (!context.isPlayerDead() && !context.isAllEnemiesDead()) {
@@ -29,7 +29,7 @@ public class BattleEngine {
 
             // Check whether can spawn backup enemies or not
             if (context.isAllEnemiesDead() && context.triggerBackupSpawn()) {
-                // UI PLACEHOLDER: Display backup spawn information
+                ui.displayMessage("Backup enemies appear!");
             }
         }
 
@@ -38,14 +38,14 @@ public class BattleEngine {
 
     // Round logic
     private void runRound() {
-        // UI PLACEHOLDER: (can make this look nicer, this is a prototype for now)
+        ui.displayMessage("\n=== Round " + context.getRoundNumber() + " ===");
         // UI displays the current round number
 
         // Get and display the turn order for this round
         // context.getAllCombatants
         List<Combatant> combatants = turnStrategy.determineTurnOrder(context.getAllCombatants());
 
-        // UI PLACEHOLDER: UI displays the turn order for this round here
+        ui.displayTurnOrder(combatants);
         // e.g: "Turn Order: Wolf (SPD 35) → Warrior (SPD 30) → Goblin (SPD 25)"
 
         // Process turns
@@ -60,7 +60,7 @@ public class BattleEngine {
                 break;
         }
 
-        // UI PLACEHOLDER: UI displays end-of-round information here
+        ui.displayBattleState(context);
 
         // End of round updates
         tickAllEffects();
@@ -73,13 +73,17 @@ public class BattleEngine {
         // removeDead() is called but the local combatant list is not modified yet
         if (!combatant.isAlive()) return;
 
+        ui.displayMessage("\n" + combatant.getName() + "'s turn:");
         // Apply turn effects before combatant is allowed to do anything
         // e.g: ArcaneBlastBuff
         combatant.applyEffects();
 
+        if (!combatant.isAlive()){
+            ui.displayMessage(combatant.getName() + " was defeated before acting.");
+        }
         // Combatant IS stunned, tick the stun effect before skipping the turn
         if (!combatant.canAct()) {
-            // UI PLACEHOLDER: UI displays that the combatant's turn is skipped
+            ui.displayMessage(combatant.getName() + " cannot act this turn.");
 
             // Tick the stun effect here, rather than waiting for tickAllEffects() to
             // avoid ticking the effect twice
@@ -99,7 +103,7 @@ public class BattleEngine {
 
         // Display the turn result
         String result = action.execute(combatant, context);
-        // UI PLACEHOLDER: Display the turn result
+        ui.displayMessage(result);
         // e.g: Goblin A → BasicAttack → Warrior: HP: 260 → 245 (dmg: 35−20=15)
 
         // Decrement combatant's special skill cooldown
