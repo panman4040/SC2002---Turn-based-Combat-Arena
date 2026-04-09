@@ -55,10 +55,6 @@ public abstract class Combatant {
         return true;
     }
 
-    public void addStatusEffect(StatusEffect effect) {
-        statusEffects.add(effect);
-    }
-
     public int getEffectiveAttack() {
         int attack = baseAttack;
         for (StatusEffect effect : statusEffects) {
@@ -91,8 +87,48 @@ public abstract class Combatant {
         return speed;
     }
 
+    public void addStatusEffect(StatusEffect effect) {
+        for (StatusEffect existingEffect : statusEffects) {
+            // Check whether effect is already applied
+            // If yes, extend the duration
+            if (existingEffect.getName().equals(effect.getName())) {
+                existingEffect.setDuration(existingEffect.getDuration() + effect.getDuration());
+                return; 
+            }
+        }
+
+        // If no, add the effect
+        statusEffects.add(effect);
+    }
+
     public List<StatusEffect> getStatusEffects() {
-        return statusEffects;
+        return new ArrayList<>(statusEffects);
+    }
+
+    public void tickStunEffects() {
+        for (int i = statusEffects.size() - 1; i >= 0; i--) {
+            StatusEffect effect = statusEffects.get(i);
+            // Check whether effect can prevent actions, aka stunning
+            if (effect.preventAction()) {
+                effect.tick();
+                if (effect.isExpired()) {
+                    statusEffects.remove(i); 
+                }
+            }
+        }
+    }
+
+    public void tickNonStunEffects() {
+        for (int i = statusEffects.size() - 1; i >= 0; i--) {
+            StatusEffect effect = statusEffects.get(i);
+            // Check whether effect cannot prevent actions
+            if (!effect.preventAction()) {
+                effect.tick();
+                if (effect.isExpired()) {
+                    statusEffects.remove(i); 
+                }
+            }
+        }
     }
 
     public void reduceSpecialCooldown() { /* no-op by default */};

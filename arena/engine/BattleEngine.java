@@ -1,7 +1,6 @@
 package arena.engine;
 
 import arena.domain.action.Action;
-import arena.domain.effect.StatusEffect;
 import arena.domain.entity.Combatant;
 import arena.ui.GameUI;
 import java.util.List;
@@ -62,8 +61,10 @@ public class BattleEngine {
         ui.displayBattleState(context);
 
         // End of round updates
-        tickAllEffects();
         context.incrementRound();
+        for (Combatant combatant : combatants) {
+            combatant.tickNonStunEffects();
+        }
     }
 
     // Turn logic
@@ -88,16 +89,8 @@ public class BattleEngine {
         if (!combatant.canAct()) {
             ui.displayMessage(combatant.getName() + " cannot act this turn.");
 
-            // Tick the stun effect here, rather than waiting for tickAllEffects() to
-            // avoid ticking the effect twice
-
-            combatant.getStatusEffects().removeIf(effect -> {
-                if (effect.preventAction()) {
-                    effect.tick();
-                    return effect.isExpired();
-                }
-                return false;
-            });
+            // Tick the stun effect
+            combatant.tickStunEffects();
             return;
         }
 
@@ -108,20 +101,5 @@ public class BattleEngine {
         String result = action.execute(combatant, context);
         ui.displayMessage(result);
         // e.g: Goblin A → BasicAttack → Warrior: HP: 260 → 245 (dmg: 35−20=15)
-    }
-
-    // End-of-round effect ticking
-    private void tickAllEffects() {
-        // Tick the status effects on every living combatant and
-        // remove those that expire
-        for (Combatant combatant: context.getAllCombatants()) {
-            List<StatusEffect> effects = combatant.getStatusEffects();
-            effects.removeIf(effect -> {
-                // Stunned effects are ticked in processTurn(), so we skip
-                if (effect.preventAction()) return false;
-                effect.tick();
-                return effect.isExpired();
-            });
-        }
     }
 }
