@@ -11,6 +11,7 @@ public interface GameUI {
     void displayMessage(String message);
     void displayBattleState(BattleContext context);
     void displayTurnOrder(List<Combatant> combatants);
+    Player choosePlayer();
     Action getPlayerAction(Player player, BattleContext context);
     Level chooseDifficulty();
 }

@@ -7,7 +7,7 @@ import arena.domain.action.UseItem;
 import arena.domain.entity.Combatant;
 import arena.domain.entity.Enemy;
 import arena.domain.entity.Player;
-import arena.domain.entity.Warrior;
+import arena.domain.entity.PlayerFactory;
 import arena.engine.BattleContext;
 import arena.engine.Level;
 import java.util.List;
@@ -48,20 +48,36 @@ public class CLIGameUI implements GameUI {
         int smokeBombCount = 0;
 
         for (var item : player.getItems()) {
-            if (item.getName().equals("Power Stone")) {
-                powerStoneCount++;
-            } else if (item.getName().equals("Potion")) {
-                potionCount++;
-            } else if (item.getName().equals("Smoke Bomb")) {
-                smokeBombCount++;
+            switch (item.getName()) {
+                case "Potion":      potionCount++;     break;
+                case "Power Stone": powerStoneCount++; break;
+                case "Smoke Bomb":  smokeBombCount++;  break;
             }
         }
         System.out.print(" | Potion: " + potionCount);
         System.out.print(" | Power Stone: " + powerStoneCount);
         System.out.print(" | Smoke Bomb: " + smokeBombCount);
-
         System.out.print(" | Special Skills Cooldown: " + player.getSpecialCooldown() + " rounds");
         System.out.println();
+    }
+    @Override
+    public Player choosePlayer() {
+        System.out.println("╔══════════════════════════════════════╗");
+        System.out.println("║        TURN-BASED COMBAT ARENA       ║");
+        System.out.println("╚══════════════════════════════════════╝");
+        System.out.println();
+        System.out.println("=== Player Classes ===");
+        PlayerFactory.printOptions();
+
+        while (true) {
+            System.out.print("Choose your class: ");
+            int choice = readInt();
+            try {
+            return PlayerFactory.create(choice);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid choice. Please try again.");
+        }
+        }
     }
 
     //  Turn order for (runRound)
@@ -88,8 +104,7 @@ public class CLIGameUI implements GameUI {
             System.out.println("2. Medium");
             System.out.println("3. Hard");
             System.out.print("Enter choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = readInt();
 
             switch (choice) {
                 case 1:
@@ -120,8 +135,7 @@ public class CLIGameUI implements GameUI {
         }
         while (true) {
             System.out.print("Enter choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = readInt();
             if (choice >= 1 && choice <= enemies.size()) {
                 return enemies.get(choice - 1);
             }
@@ -141,8 +155,7 @@ public class CLIGameUI implements GameUI {
         }
         while (true) {
             System.out.print("Enter choice: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = readInt();
             if (choice >= 1 && choice <= items.size()) {
                 return choice - 1;
             }
@@ -161,8 +174,7 @@ public class CLIGameUI implements GameUI {
             System.out.println("4. Special Skill" + (!player.isSpecialReady() ? " (cooldown: " + player.getSpecialCooldown() + ")" : ""));
             System.out.print("Enter choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = readInt();
 
             switch (choice) {
                 case 1:
@@ -200,6 +212,16 @@ public class CLIGameUI implements GameUI {
                     System.out.println("Invalid choice. Please enter 1–4.");
             }
         }
+    }
+
+    private int readInt() {
+        while (!scanner.hasNextInt()) {
+            scanner.nextLine();
+            System.out.print("Please enter a number: ");
+        }
+        int val = scanner.nextInt();
+        scanner.nextLine();
+        return val;
     }
 }
 
