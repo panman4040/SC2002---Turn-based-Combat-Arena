@@ -50,7 +50,7 @@ public class CLIGameUI implements GameUI {
         int potionCount = 0;
         int smokeBombCount = 0;
 
-        for (var item : player.getItems()) {
+        for (var item : player.getInventory().getItems()) {
             switch (item.getName()) {
                 case "Potion":      potionCount++;     break;
                 case "Power Stone": powerStoneCount++; break;
@@ -186,7 +186,7 @@ public class CLIGameUI implements GameUI {
             System.out.println("Choose an action:");
             System.out.println("1. Basic Attack");
             System.out.println("2. Defend");
-            System.out.println("3. Use Item" + (!player.hasItems() ? " (none left)" : ""));
+            System.out.println("3. Use Item" + (player.getInventory().isEmpty() ? " (none left)" : ""));
             System.out.println("4. Special Skill" + (!player.isSpecialReady() ? " (cooldown: " + player.getSpecialCooldown() + ")" : ""));
             System.out.print("Enter choice: ");
 
@@ -201,9 +201,9 @@ public class CLIGameUI implements GameUI {
                     return new Defend();
 
                 case 3:
-                    if (player.hasItems()) {
+                    if (!player.getInventory().isEmpty()) {
                         int itemIndex = chooseItem(player);
-                        return new UseItem(player.removeItem(itemIndex));
+                        return new UseItem(player.getInventory().removeItem(itemIndex));
                     } else {
                         System.out.println("No items available.");
                         break;
