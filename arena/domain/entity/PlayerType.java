@@ -2,19 +2,8 @@ package arena.domain.entity;
 
 public enum PlayerType {
     // Defining stats
-    WARRIOR("Warrior", "Guy that smacks and smashes!", 260, 40, 20, 30, "Shield Bash") {
-        @Override
-        public Player createPlayer() {
-            return new Warrior(); 
-        }
-    },
-    
-    WIZARD("Wizard", "Gal that shoots people!", 200, 50, 10, 20, "Arcane Blast") {
-        @Override
-        public Player createPlayer() {
-            return new Wizard();
-        }
-    };
+    WARRIOR("Warrior", "Guy that smacks and smashes!", 260, 40, 20, 30, "Shield Bash"),
+    WIZARD("Wizard", "Gal that shoots people!", 200, 50, 10, 20, "Arcane Blast");
 
     // Attributes for display
     private final String name;
@@ -44,6 +33,4 @@ public enum PlayerType {
     public int getBaseDefense() { return baseDefense; }
     public int getSpeed() { return speed; }
     public String getSpecialSkill() { return specialSkill; }
-
-    public abstract Player createPlayer(); 
 }

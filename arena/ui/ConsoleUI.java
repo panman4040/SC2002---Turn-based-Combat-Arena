@@ -20,7 +20,7 @@ public class ConsoleUI implements GameSetupUI, BattleUI {
 
     // Game Setup Display
     @Override
-    public Player choosePlayerClass() {
+    public PlayerType choosePlayerClass() {
         displayMessage("\n=== CHOOSE YOUR CLASS ===");
 
         PlayerType[] options = PlayerType.values();
@@ -54,8 +54,8 @@ public class ConsoleUI implements GameSetupUI, BattleUI {
         }
 
         displayMessage("You have chosen: " + options[choice - 1].getName() + "!\n");
-        
-        return options[choice - 1].createPlayer();
+
+        return options[choice - 1];
     }
 
     @Override
