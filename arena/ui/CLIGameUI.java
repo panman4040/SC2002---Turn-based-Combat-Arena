@@ -9,6 +9,7 @@ import arena.domain.entity.Enemy;
 import arena.domain.entity.Player;
 import arena.domain.entity.PlayerFactory;
 import arena.engine.BattleContext;
+import arena.domain.item.ItemFactory;
 import arena.engine.Level;
 import java.util.List;
 import java.util.Scanner;
@@ -60,8 +61,10 @@ public class CLIGameUI implements GameUI {
         System.out.print(" | Special Skills Cooldown: " + player.getSpecialCooldown() + " rounds");
         System.out.println();
     }
+
+    //choosePlayerClass
     @Override
-    public Player choosePlayer() {
+    public Player choosePlayerClass(){
         System.out.println("╔══════════════════════════════════════╗");
         System.out.println("║        TURN-BASED COMBAT ARENA       ║");
         System.out.println("╚══════════════════════════════════════╝");
@@ -73,13 +76,33 @@ public class CLIGameUI implements GameUI {
             System.out.print("Choose your class: ");
             int choice = readInt();
             try {
-            return PlayerFactory.create(choice);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Invalid choice. Please try again.");
-        }
+                return PlayerFactory.create(choice);
+            } 
+            catch (IllegalArgumentException e) {
+                System.out.println("Invalid choice. Please try again.");
+            }
         }
     }
 
+    //chooseItems
+    @Override
+    public void chooseItemsStart(Player player) {
+        System.out.println("\n=== Item Selection (pick 2, duplicates allowed) ===");
+        ItemFactory.printOptions();
+
+        for (int i = 1; i <= 2; i++) {
+            while (true) {
+                System.out.print("Choose item " + i + ": ");
+                int choice = readInt();
+                try {
+                    player.getInventory().addItem(ItemFactory.create(choice));
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid choice. Please enter 1–3.");
+                }
+            }
+        }
+    }
     //  Turn order for (runRound)
     @Override
     public void displayTurnOrder(List<Combatant> combatants) {
