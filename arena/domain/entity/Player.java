@@ -2,10 +2,7 @@ package arena.domain.entity;
 
 import arena.domain.action.SpecialSkill;
 import arena.domain.item.Inventory;
-import arena.domain.item.Item;
 import arena.engine.BattleContext;
-
-import java.util.List;
 
 public abstract class Player extends Combatant {
     private final Inventory inventory;
@@ -25,23 +22,6 @@ public abstract class Player extends Combatant {
 
     public Inventory getInventory() {
         return inventory;
-    }
-
-    // Convenience delegations so callers don't need to go through getInventory()
-    public boolean hasItems() {
-        return !inventory.isEmpty();
-    }
-
-    public List<Item> getItems() {
-        return inventory.getItems();
-    }
-
-    public Item removeItem(int index) {
-        return inventory.removeItem(index);
-    }
-
-    public void addItem(Item item) {
-        inventory.addItem(item);
     }
 
     public boolean isSpecialReady() {

@@ -16,8 +16,13 @@ public class Inventory implements ItemContainer {
     }
 
     @Override
-    public Item removeItem(int index) {
-        return items.remove(index);
+    public void removeItem(int index) {
+        items.remove(index);
+    }
+
+    @Override
+    public void removeItem(Item item) {
+        items.remove(item);
     }
 
     @Override
