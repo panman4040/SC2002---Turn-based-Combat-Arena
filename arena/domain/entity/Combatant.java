@@ -1,9 +1,7 @@
 package arena.domain.entity;
 
-import arena.domain.action.Action;
 import arena.domain.effect.StatusEffect;
 import arena.engine.BattleContext;
-import arena.ui.GameUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,11 +127,9 @@ public abstract class Combatant {
                 }
             }
         }
-    }
+    }   
 
     public void reduceSpecialCooldown() { /* no-op by default */};
 
-    public abstract void triggerSpecial(BattleContext context);
-
-    public abstract Action chooseAction(BattleContext context, GameUI ui);
+    public void triggerSpecial(BattleContext context) { /* no-op by default */};
 }

@@ -1,15 +1,13 @@
 package arena.domain.entity;
 
-import arena.domain.action.Action;
 import arena.domain.action.SpecialSkill;
 import arena.domain.item.Inventory;
 import arena.engine.BattleContext;
-import arena.ui.GameUI;
 
 public abstract class Player extends Combatant {
     private final Inventory inventory;
     private int specialCooldown;
-    private SpecialSkill specialSkill;
+    private final SpecialSkill specialSkill;
 
     protected Player(String name, int maxHp, int baseAttack, int baseDefense, int speed, SpecialSkill specialSkill) {
         super(name, maxHp, baseAttack, baseDefense, speed);
@@ -43,14 +41,5 @@ public abstract class Player extends Combatant {
     @Override
     public void reduceSpecialCooldown() {
         if (specialCooldown > 0) specialCooldown--;
-    }
-
-    @Override
-    public Action chooseAction(BattleContext context, GameUI ui) {
-        Action action = ui.getPlayerAction(this, context);
-        if (action instanceof SpecialSkill) {
-            specialCooldown = ((SpecialSkill) action).getCooldownDuration();
-        }
-        return action;
     }
 }
