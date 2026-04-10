@@ -1,6 +1,7 @@
 package arena.domain.entity;
 
 import arena.domain.effect.StatusEffect;
+import arena.engine.ActionGetter;
 import arena.engine.BattleContext;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ public abstract class Combatant {
     private final int speed;
     private final List<StatusEffect> statusEffects;
 
+    private ActionGetter actionGetter;
+
     protected Combatant(String name, int maxHp, int baseAttack, int baseDefense, int speed) {
         this.name = name;
         this.maxHp = maxHp;
@@ -22,6 +25,14 @@ public abstract class Combatant {
         this.baseDefense = baseDefense;
         this.speed = speed;
         this.statusEffects = new ArrayList<>();
+    }
+
+    public void setActionGetter(ActionGetter actionGetter) {
+        this.actionGetter = actionGetter;
+    }
+
+    public ActionGetter getActionGetter() {
+        return actionGetter;
     }
 
     public void takeDamage(int damage) {

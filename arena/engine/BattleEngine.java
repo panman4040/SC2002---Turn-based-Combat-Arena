@@ -95,7 +95,7 @@ public class BattleEngine {
         }
 
         // Combatant is NOT stunned, proceed normally
-        Action action = combatant.chooseAction(context, ui);
+        Action action = combatant.getActionGetter().getAction(combatant, context);
 
         // Display the turn result
         String result = action.execute(combatant, context);

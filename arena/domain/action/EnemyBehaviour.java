@@ -1,8 +1,8 @@
 package arena.domain.action;
 
+import arena.domain.entity.Combatant;
 import arena.engine.BattleContext;
-import arena.ui.GameUI;
 
 public interface EnemyBehaviour {
-    Action chooseAction(BattleContext context, GameUI ui);
+    Action chooseAction(Combatant source, BattleContext context);
 }
