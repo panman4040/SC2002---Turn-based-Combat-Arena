@@ -27,7 +27,7 @@ public class ShieldBash extends SpecialSkill {
     }
 
     @Override
-    public SpecialSkill withTarget(Combatant target) {
+    public Action withTarget(Combatant target) {
         return new ShieldBash(target);
     }
 
