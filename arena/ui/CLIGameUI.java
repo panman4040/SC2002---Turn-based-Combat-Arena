@@ -11,6 +11,8 @@ import arena.domain.entity.PlayerFactory;
 import arena.engine.BattleContext;
 import arena.domain.item.ItemFactory;
 import arena.engine.Level;
+import arena.engine.LevelFactory;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -121,29 +123,20 @@ public class CLIGameUI implements GameUI {
     // Difficulty selection
     @Override
     public Level chooseDifficulty() {
+        System.out.println("\n=== Difficulty ===");
+        LevelFactory.printOptions();
+
         while (true) {
-            System.out.println("Choose difficulty:");
-            System.out.println("1. Easy");
-            System.out.println("2. Medium");
-            System.out.println("3. Hard");
-            System.out.print("Enter choice: ");
+            System.out.print("Choose difficulty: ");
             int choice = readInt();
-
-            switch (choice) {
-                case 1:
-                    return Level.createEasy();
-
-                case 2:
-                    return Level.createMedium();
-
-                case 3:
-                    return Level.createHard();
-
-                default:
-                    System.out.println("Invalid choice. Please enter 1, 2 or 3.");
+            try {
+                return LevelFactory.create(choice);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid choice. Please try again.");
             }
         }
     }
+
 
     // Helper: let player choose an enemy target
     private Enemy chooseTarget(BattleContext context) {
