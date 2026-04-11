@@ -72,7 +72,10 @@ public class BattleEngine {
         ui.displayMessage("\n" + combatant.getName() + "'s turn:");
 
         // Apply effects before turn
-        combatant.applyEffects();
+        String effectMessages = combatant.applyEffects();
+        if (!effectMessages.isEmpty()) {
+            ui.displayMessage(effectMessages);
+        }
 
         if (!combatant.isAlive()) {
             ui.displayMessage(combatant.getName() + " was defeated before acting.");
