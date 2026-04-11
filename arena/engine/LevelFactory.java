@@ -6,6 +6,7 @@ public class LevelFactory {
             case EASY -> new EasyLevel();
             case MEDIUM -> new MediumLevel();
             case HARD -> new HardLevel();
+            default -> throw new IllegalArgumentException("Unknown level type: " + type);
         };
     }
 }

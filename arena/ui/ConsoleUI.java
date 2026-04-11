@@ -35,7 +35,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
             System.out.print(prompt);
             try {
                 return Integer.parseInt(scanner.nextLine().trim());
-            } 
+            }
             catch (NumberFormatException e) {
                 displayMessage("Invalid input. Please enter a number.");
             }
@@ -92,9 +92,9 @@ public class ConsoleUI implements InterfaceConsoleUI {
             PlayerType currentType = options[i];
             displayMessage((i + 1) + ". " + currentType.getName() + ": " + currentType.getDescription());
             displayMessage("[HP: " + currentType.getMaxHp() +
-                " | Attack: " + currentType.getBaseAttack() +
-                " | Defense: " + currentType.getBaseDefense() +
-                " | Special Skill: " + currentType.getSpecialSkill() + "]");
+                    " | Attack: " + currentType.getBaseAttack() +
+                    " | Defense: " + currentType.getBaseDefense() +
+                    " | Special Skill: " + currentType.getSpecialSkill() + "]");
         }
 
         int choice = readIntInRange("\nSelect your fighter (1-" + options.length + "): ", 1, options.length);
@@ -157,8 +157,8 @@ public class ConsoleUI implements InterfaceConsoleUI {
         displayMessage("              VICTORY!                 ");
         displayMessage("========================================");
         displayMessage("Congrats champ! You aced it.");
-        displayMessage(String.format("Statistics: Remaining HP: %d/%d | Total Rounds: %d", 
-        player.getHp(), player.getMaxHp(), totalRounds));
+        displayMessage(String.format("Statistics: Remaining HP: %d/%d | Total Rounds: %d",
+                player.getHp(), player.getMaxHp(), totalRounds));
     }
 
     @Override
@@ -168,7 +168,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
         displayMessage("========================================");
         displayMessage("Defeated. Don't give up!");
         displayMessage(String.format("Statistics: Enemies remaining: %d | Total Rounds Survived: %d",
-        enemiesRemaining, totalRounds));
+                enemiesRemaining, totalRounds));
     }
 
     @Override
@@ -179,8 +179,8 @@ public class ConsoleUI implements InterfaceConsoleUI {
             displayMessage("2. Start a new game");
             displayMessage("3. Exit");
             return readIntInRange("Enter choice (1-3): ", 1, 3);
-        } 
-        
+        }
+
         else {
             displayMessage("1. Start a new game");
             displayMessage("2. Exit");
@@ -193,21 +193,21 @@ public class ConsoleUI implements InterfaceConsoleUI {
     public void displayLevelSummary(BattleContext context) {
         displayMessage("\n=== LEVEL SUMMARY ===");
         Player player = context.getPlayer();
-        
+
         // Print Player Stats
-        displayMessage("Player: " + player.getName() + 
-                       ", Player Stats: HP: " + player.getMaxHp() + 
-                       ", ATK: " + player.getEffectiveAttack() + 
-                       ", DEF: " + player.getEffectiveDefense() + 
-                       ", SPD: " + player.getSpeed());
+        displayMessage("Player: " + player.getName() +
+                ", Player Stats: HP: " + player.getMaxHp() +
+                ", ATK: " + player.getEffectiveAttack() +
+                ", DEF: " + player.getEffectiveDefense() +
+                ", SPD: " + player.getSpeed());
 
         // Print Items
         List<Item> items = player.getInventory().getItems();
         String itemString = "";
-        
+
         if (items.isEmpty()) {
             itemString = "None";
-        } 
+        }
         else {
             for (int i = 0; i < items.size(); i++) {
                 itemString += items.get(i).getName();
@@ -221,7 +221,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
         // Print Enemies 
         List<Enemy> enemies = context.getAllEnemies();
         String enemiesList = "";
-        
+
         for (int i = 0; i < enemies.size(); i++) {
             enemiesList += enemies.get(i).getName();
             // Add a " + " unless it's the very last enemy
@@ -233,20 +233,20 @@ public class ConsoleUI implements InterfaceConsoleUI {
 
         // Print Unique Enemy Stats
         displayMessage(""); // spacing
-        
+
         List<String> alreadyPrintedTypes = new ArrayList<>();
-        
+
         for (int i = 0; i < enemies.size(); i++) {
             Combatant enemy = enemies.get(i);
-            String typeName = enemy.getName();
-            
+            String typeName = enemy.getClass().getSimpleName();
+
             // Print if list hasn't contained this enemy type
             if (!alreadyPrintedTypes.contains(typeName)) {
-                displayMessage(typeName + " Stats: HP: " + enemy.getMaxHp() + 
-                               ", ATK: " + enemy.getEffectiveAttack() + 
-                               ", DEF: " + enemy.getEffectiveDefense() + 
-                               ", SPD: " + enemy.getSpeed());
-                
+                displayMessage(typeName + " Stats: HP: " + enemy.getMaxHp() +
+                        ", ATK: " + enemy.getEffectiveAttack() +
+                        ", DEF: " + enemy.getEffectiveDefense() +
+                        ", SPD: " + enemy.getSpeed());
+
                 alreadyPrintedTypes.add(typeName);
             }
         }
@@ -263,7 +263,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
         int wholeLevelThreshold = 2000000000; // essentially infinite
 
         sb.append("- ").append(combatant.getName())
-          .append(" HP: ").append(combatant.getHp()).append("/").append(combatant.getMaxHp());
+                .append(" HP: ").append(combatant.getHp()).append("/").append(combatant.getMaxHp());
 
         List<StatusEffect> effects = combatant.getStatusEffects();
 
@@ -276,7 +276,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
                 if (duration > wholeLevelThreshold) {
                     // Infinite effects such as ArcaneBlast still ticks, so need to have threshold value
                     sb.append(effect.getName()).append(" (whole level)");
-                } 
+                }
                 else {
                     sb.append(effect.getName()).append(" (").append(duration).append(" turn)");
                 }
@@ -331,9 +331,9 @@ public class ConsoleUI implements InterfaceConsoleUI {
 
             // Build labels so disabled options are clearly marked before the player chooses
             String specialLabel = "3. " + skill.getName()
-                + (player.isSpecialReady() ? "" : " (cooldown: " + player.getSpecialCooldown() + " turns)");
+                    + (player.isSpecialReady() ? "" : " (cooldown: " + player.getSpecialCooldown() + " turns)");
             String itemLabel = "4. Use Item"
-                + (player.getInventory().isEmpty() ? " (none left)" : "");
+                    + (player.getInventory().isEmpty() ? " (none left)" : "");
 
             displayMessage("\n=== YOUR TURN ===");
             displayMessage("1. Basic Attack");

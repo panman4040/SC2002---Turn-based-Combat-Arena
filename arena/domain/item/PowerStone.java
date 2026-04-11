@@ -1,5 +1,6 @@
 package arena.domain.item;
 
+import arena.domain.action.SpecialSkill;
 import arena.domain.entity.Combatant;
 import arena.engine.BattleContext;
 
@@ -20,9 +21,14 @@ public class PowerStone implements Item {
 
     @Override
     public String use(Combatant user, BattleContext context) {
+        SpecialSkill skill = user.getSpecialSkill();
+        if (skill == null) {
+            return "No special skill available!";
+        }
+
         // Trigger the special skill effect once without affecting cooldown
-        user.getSpecialSkill().setTarget(target);
-        return String.format("Special Skill Activates!\n" + "%s", user.getSpecialSkill().execute(user, context));
+        skill.setTarget(target);
+        return String.format("Special Skill Activates!\n" + "%s", skill.execute(user, context));
     }
 
     @Override
@@ -30,3 +36,4 @@ public class PowerStone implements Item {
         return "Power Stone";
     }
 }
+

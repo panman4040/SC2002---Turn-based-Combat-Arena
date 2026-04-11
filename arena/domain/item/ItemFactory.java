@@ -7,6 +7,7 @@ public class ItemFactory {
             case POTION -> new Potion();
             case POWER_STONE -> new PowerStone();
             case SMOKE_BOMB -> new SmokeBomb();
+            default -> throw new IllegalArgumentException("Unknown item type: " + type);
         };
     }
 }

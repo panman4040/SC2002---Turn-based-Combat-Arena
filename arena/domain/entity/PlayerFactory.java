@@ -5,6 +5,8 @@ public class PlayerFactory {
         return switch (type) {
             case WARRIOR -> new Warrior();
             case WIZARD -> new Wizard();
+            default -> throw new IllegalArgumentException("Unknown player type: " + type);
         };
     }
 }
+

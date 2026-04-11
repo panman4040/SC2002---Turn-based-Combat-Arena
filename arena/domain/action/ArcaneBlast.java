@@ -21,6 +21,8 @@ public class ArcaneBlast extends SpecialSkill {
         result.append(String.format("%s -> Arcane Blast -> All Enemies: ", user.getName()));
         result.append('\n');
 
+        int currentAttackBonus = 0;
+
         for (Enemy enemy: context.getAliveEnemies()) {
             // Re-fetch ATK each iteration so kills within the same blast stack
             int atk = user.getEffectiveAttack();
@@ -32,22 +34,24 @@ public class ArcaneBlast extends SpecialSkill {
             int hpAfter = enemy.getHp();
 
             result.append(String.format(
-                "%s HP: %d -> %d (dmg: %d-%d=%d)",
-                enemy.getName(), hpBefore, hpAfter, atk, def, damage
+                    "%s HP: %d -> %d (dmg: %d-%d=%d)",
+                    enemy.getName(), hpBefore, hpAfter, atk, def, damage
             ));
 
             if (!enemy.isAlive()) {
-                cumulativeAttackBonus += ATTACK_BONUS_PER_KILL;
+                currentAttackBonus += ATTACK_BONUS_PER_KILL;
 
                 result.append(" ELIMINATED");
                 result.append(String.format(
-                    " | ATK: %d -> %d (+%d per Arcane Blast kill)",
-                    atk, user.getEffectiveAttack() + cumulativeAttackBonus, ATTACK_BONUS_PER_KILL
+                        " | ATK: %d -> %d (+%d per Arcane Blast kill)",
+                        atk + currentAttackBonus - ATTACK_BONUS_PER_KILL, atk + currentAttackBonus, ATTACK_BONUS_PER_KILL
                 ));
             }
 
             result.append('\n');
         }
+
+        cumulativeAttackBonus += currentAttackBonus;
 
         result.append(String.format("Total ATK Bonus: +%d", cumulativeAttackBonus));
 
@@ -58,3 +62,4 @@ public class ArcaneBlast extends SpecialSkill {
         return result.toString();
     }
 }
+
