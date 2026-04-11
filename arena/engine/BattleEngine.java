@@ -70,8 +70,6 @@ public class BattleEngine {
         }
 
         ui.displayMessage("\n" + combatant.getName() + "'s turn:");
-        // Reduce special cooldown first, only meaningful for Player
-        combatant.reduceSpecialCooldown();
 
         // Apply effects before turn
         combatant.applyEffects();
@@ -88,6 +86,9 @@ public class BattleEngine {
             combatant.tickStunEffects();
             return;
         }
+
+        // Reduce special cooldown first, only meaningful for Player
+        combatant.reduceSpecialCooldown();
 
         // If not stunned, proceed normally
         Action action = combatant.getActionGetter().getAction(combatant, context);
