@@ -13,8 +13,9 @@ import arena.domain.entity.PlayerType;
 import arena.domain.item.Item;
 import arena.domain.item.ItemFactory;
 import arena.domain.item.ItemType;
+import arena.domain.level.LevelType;
 import arena.engine.BattleContext;
-import arena.engine.LevelType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

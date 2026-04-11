@@ -1,7 +1,8 @@
-package arena.engine;
+package arena.domain.level;
 
 import arena.domain.entity.Enemy;
 import arena.domain.entity.Goblin;
+
 import java.util.ArrayList;
 import java.util.List;
 

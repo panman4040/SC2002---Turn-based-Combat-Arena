@@ -2,7 +2,7 @@ package arena.ui;
 
 import arena.domain.entity.Player;
 import arena.domain.entity.PlayerType;
-import arena.engine.LevelType;
+import arena.domain.level.LevelType;
 
 public interface InterfaceGameSetupUI extends InterfaceDisplayUI {
     PlayerType choosePlayerClass();

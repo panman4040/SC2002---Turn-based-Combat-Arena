@@ -1,4 +1,4 @@
-package arena.engine;
+package arena.domain.level;
 
 public class LevelFactory {
     public static Level createLevel(LevelType type) {

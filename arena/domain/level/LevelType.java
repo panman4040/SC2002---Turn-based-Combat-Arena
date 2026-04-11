@@ -1,4 +1,4 @@
-package arena.engine;
+package arena.domain.level;
 
 public enum LevelType {
     EASY("Easy", "Initial: 3 Goblins"),

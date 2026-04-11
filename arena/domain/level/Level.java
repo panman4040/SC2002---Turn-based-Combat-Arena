@@ -1,4 +1,4 @@
-package arena.engine;
+package arena.domain.level;
 
 import arena.domain.entity.Enemy;
 import java.util.List;
