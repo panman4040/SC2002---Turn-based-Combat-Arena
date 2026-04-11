@@ -23,10 +23,18 @@ public class BasicAttack implements Action {
         int hpAfter = target.getHp();
 
         // need to decide what to return for string
-        return String.format(
+        StringBuilder result = new StringBuilder();
+
+        result.append(String.format(
             "%s -> Basic Attack -> %s: HP %d -> %d (ATK %d - DEF %d = %d dmg)",
             source.getName(), target.getName(), hpBefore, hpAfter, atk, def, damage
-        );
+        ));
+
+        if (!target.isAlive()) {
+            result.append(String.format(" | %s ELIMINATED", target.getName()));
+        }
+
+        return result.toString();
     }
 
     @Override

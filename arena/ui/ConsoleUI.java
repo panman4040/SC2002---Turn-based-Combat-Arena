@@ -260,6 +260,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
     @Override
     public String formatCombatantStats(Combatant combatant) {
         StringBuilder sb = new StringBuilder();
+        int wholeLevelThreshold = 2000000000; // essentially infinite
 
         sb.append("- ").append(combatant.getName())
           .append(" HP: ").append(combatant.getHp()).append("/").append(combatant.getMaxHp());
@@ -272,9 +273,11 @@ public class ConsoleUI implements InterfaceConsoleUI {
                 StatusEffect effect = effects.get(i);
                 int duration = effect.getDuration();
 
-                if (duration == Integer.MAX_VALUE) {
+                if (duration > wholeLevelThreshold) {
+                    // Infinite effects such as ArcaneBlast still ticks, so need to have threshold value
                     sb.append(effect.getName()).append(" (whole level)");
-                } else {
+                } 
+                else {
                     sb.append(effect.getName()).append(" (").append(duration).append(" turn)");
                 }
 

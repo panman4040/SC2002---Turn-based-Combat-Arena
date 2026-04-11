@@ -50,9 +50,7 @@ public class BattleEngine {
             }
         }
 
-        // Display summary
-        ui.displayBattleState(context);
-
+        // End of round update
         context.incrementRound();
 
         // Tick non-stun effects
@@ -61,6 +59,9 @@ public class BattleEngine {
                 combatant.tickNonStunEffects();
             }
         }
+
+        // Display summary
+        ui.displayBattleState(context);
     }
 
     private void processTurn(Combatant combatant) {
