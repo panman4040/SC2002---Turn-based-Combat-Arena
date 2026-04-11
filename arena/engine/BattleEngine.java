@@ -50,9 +50,6 @@ public class BattleEngine {
             }
         }
 
-        // End of round update
-        context.incrementRound();
-
         // Tick non-stun effects
         for (Combatant combatant : turnOrder) {
             if (combatant.isAlive()) {
@@ -62,6 +59,9 @@ public class BattleEngine {
 
         // Display summary
         ui.displayBattleState(context);
+
+        // End of round update
+        context.incrementRound();
     }
 
     private void processTurn(Combatant combatant) {
