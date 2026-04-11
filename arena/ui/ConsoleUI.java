@@ -219,7 +219,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
         displayMessage("\nItems: " + itemString);
 
         // Print Enemies 
-        List<Enemy> enemies = context.getAliveEnemies();
+        List<Enemy> enemies = context.getAllEnemies();
         String enemiesList = "";
         
         for (int i = 0; i < enemies.size(); i++) {
@@ -238,7 +238,7 @@ public class ConsoleUI implements InterfaceConsoleUI {
         
         for (int i = 0; i < enemies.size(); i++) {
             Combatant enemy = enemies.get(i);
-            String typeName = enemy.getClass().getSimpleName(); 
+            String typeName = enemy.getName();
             
             // Print if list hasn't contained this enemy type
             if (!alreadyPrintedTypes.contains(typeName)) {

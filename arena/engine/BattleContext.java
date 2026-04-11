@@ -24,6 +24,14 @@ public class BattleContext {
         return player;
     }
 
+    // Return currently alive enemies AND backup enemies
+    public List<Enemy> getAllEnemies() {
+        List<Enemy> all = new ArrayList<>(activeEnemies);
+        all.addAll(backupEnemies);
+        return all;
+    }
+
+    // Return alive enemies currently
     public List<Enemy> getAliveEnemies() {
         List<Enemy> alive = new ArrayList<>();
         for (Enemy enemy : activeEnemies) {
