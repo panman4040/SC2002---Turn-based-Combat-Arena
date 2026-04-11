@@ -31,6 +31,12 @@ public abstract class SpecialSkill implements Action {
         return name;
     }
 
+    @Override
+    public void onSelectedBy(Combatant source) {
+        source.startSpecialCooldown();
+    }
+    
     public Combatant getTarget() { return target; }
+
 }
  

@@ -163,5 +163,7 @@ public abstract class Combatant {
         }
     }   
 
-    public void reduceSpecialCooldown() { /* no-op by default */};
+    public void tickSpecialCooldown() { /* no-op by default */};
+
+    public void startSpecialCooldown() { /* no-op by default */ };
 }

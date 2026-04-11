@@ -25,12 +25,14 @@ public abstract class Player extends Combatant {
         return specialCooldown;
     }
 
-    public void setSpecialCooldown(int cooldown) {
-        this.specialCooldown = cooldown;
+    public void startSpecialCooldown() {
+        if (getSpecialSkill() != null) {
+            this.specialCooldown = getSpecialSkill().getCooldownDuration();
+        }
     }
 
     @Override
-    public void reduceSpecialCooldown() {
+    public void tickSpecialCooldown() {
         if (specialCooldown > 0) specialCooldown--;
     }
 }

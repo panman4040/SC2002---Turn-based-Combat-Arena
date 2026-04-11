@@ -358,8 +358,6 @@ public class ConsoleUI implements InterfaceConsoleUI {
                     if (skill.requireTarget()) {
                         skill.setTarget(chooseTarget(context));
                     }
-                    // Start cooldown on use
-                    player.setSpecialCooldown(skill.getCooldownDuration());
                     return skill;
 
                 case 4:

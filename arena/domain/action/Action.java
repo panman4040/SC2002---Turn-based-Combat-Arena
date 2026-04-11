@@ -8,4 +8,8 @@ public interface Action {
     String execute(Combatant source, BattleContext context);
     
     String getName();
+
+    // default: do nothing
+    default void onSelectedBy(Combatant source) {
+    }
 }

@@ -88,10 +88,12 @@ public class BattleEngine {
         }
 
         // Reduce special cooldown first, only meaningful for Player
-        combatant.reduceSpecialCooldown();
+        combatant.tickSpecialCooldown();
 
         // If not stunned, proceed normally
         Action action = combatant.getActionGetter().getAction(combatant, context);
+
+        action.onSelectedBy(combatant);
 
         // Execute the action and display the result
         String result = action.execute(combatant, context);
