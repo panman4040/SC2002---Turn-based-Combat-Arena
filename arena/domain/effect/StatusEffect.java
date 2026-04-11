@@ -12,7 +12,9 @@ public abstract class StatusEffect {
 
     // Safeguard method for future status effects where
     // effects are applied continuously, e.g: poison, healing, etc.
-    public void apply(Combatant target) { /* no-op by default */ }
+    public String apply(Combatant target) { return ""; /* no-op by default */ }
+
+    public boolean tickOnApply() { return false; /* tick at the end of round by default */ }
 
     public boolean preventAction() { return false; }
 

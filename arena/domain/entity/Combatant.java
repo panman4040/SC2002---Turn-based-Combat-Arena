@@ -65,10 +65,26 @@ public abstract class Combatant {
         return hp > 0;
     }
 
-    public void applyEffects() {
-        for (StatusEffect effect : statusEffects) {
-            effect.apply(this);
+    public String applyEffects() {
+        // Collect information about applied effects for UI
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = statusEffects.size() - 1; i >= 0; i--) {
+            StatusEffect effect = statusEffects.get(i);
+            String msg = effect.apply(this);
+            if (msg != null && !msg.isEmpty()) {
+                sb.append(msg).append("\n");
+            }
+
+            if (effect.tickOnApply()) {
+                effect.tick();
+                if (effect.isExpired()) {
+                    statusEffects.remove(i);
+                }
+            }
         }
+
+        return sb.toString().trim();
     }
 
     public boolean canAct() {
@@ -154,7 +170,7 @@ public abstract class Combatant {
         for (int i = statusEffects.size() - 1; i >= 0; i--) {
             StatusEffect effect = statusEffects.get(i);
             // Check whether effect cannot prevent actions
-            if (!effect.preventAction()) {
+            if (!effect.preventAction() && !effect.tickOnApply()) {
                 effect.tick();
                 if (effect.isExpired()) {
                     statusEffects.remove(i); 
