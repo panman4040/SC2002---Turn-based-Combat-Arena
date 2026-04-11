@@ -24,7 +24,7 @@ public class BasicAttack implements Action {
 
         // need to decide what to return for string
         return String.format(
-            "%s → Basic Attack → %s: HP %d → %d (ATK %d - DEF %d = %d dmg)",
+            "%s -> Basic Attack -> %s: HP %d -> %d (ATK %d - DEF %d = %d dmg)",
             source.getName(), target.getName(), hpBefore, hpAfter, atk, def, damage
         );
     }

@@ -15,7 +15,7 @@ public class Potion implements Item {
         int hpBefore = user.getHp();
         user.heal(HEAL_AMOUNT);
         int hpAfter = user.getHp();
-        return String.format("HP: %d → %d (+%d)", hpBefore, hpAfter, hpAfter - hpBefore);
+        return String.format("HP: %d -> %d (+%d)", hpBefore, hpAfter, hpAfter - hpBefore);
     }
 
     @Override

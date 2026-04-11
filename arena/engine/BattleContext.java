@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BattleContext {
+
     private final Player player;
     private final List<Enemy> activeEnemies;
     private final List<Enemy> backupEnemies;
@@ -14,8 +15,8 @@ public class BattleContext {
 
     public BattleContext(Player player, List<Enemy> activeEnemies, List<Enemy> backupEnemies) {
         this.player = player;
-        this.activeEnemies = activeEnemies;
-        this.backupEnemies = backupEnemies;
+        this.activeEnemies = new ArrayList<>(activeEnemies);
+        this.backupEnemies = (backupEnemies != null) ? new ArrayList<>(backupEnemies) : new ArrayList<>();
         this.roundNumber = 1;
     }
 
@@ -24,56 +25,61 @@ public class BattleContext {
     }
 
     public List<Enemy> getAliveEnemies() {
-        return new ArrayList<>(activeEnemies);
-    }
-
-    // This method cleans up the activeEnemies, get rid of
-    // dead enemies
-    public void removeDead() {
-        List<Enemy> temp = new ArrayList<>();
-
-        // Add only alive enemies
+        List<Enemy> alive = new ArrayList<>();
         for (Enemy enemy : activeEnemies) {
             if (enemy.isAlive()) {
-                temp.add(enemy);
+                alive.add(enemy);
             }
         }
-
-        // Update the list of active enemies
-        activeEnemies.clear();
-        activeEnemies.addAll(temp);
+        return alive;
     }
 
     public List<Combatant> getAllCombatants() {
         List<Combatant> combatants = new ArrayList<>();
-        combatants.add(player);
-        combatants.addAll(activeEnemies);
-
-        return combatants;
-    }
-
-    public boolean triggerBackupSpawn() {
-        if (backupEnemies == null || backupEnemies.isEmpty()) {
-            return false; // No backup enemies exist
+        if (player.isAlive()) {
+            combatants.add(player);
         }
-        
-        activeEnemies.addAll(backupEnemies);
-        backupEnemies.clear(); // Clear backup list after spawning
-        return true; // Backup spawned successfully
+        for (Enemy enemy : activeEnemies) {
+            if (enemy.isAlive()) {
+                combatants.add(enemy);
+            }
+        }
+        return combatants;
     }
 
     public boolean isPlayerDead() {
         return !player.isAlive();
     }
 
-    // This method can now be called regardless of whether removeDead()
-    // is called
     public boolean isAllEnemiesDead() {
-        return activeEnemies.stream().noneMatch(Enemy::isAlive);
+        for (Enemy enemy : activeEnemies) {
+            if (enemy.isAlive()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public int getRoundNumber() {
         return roundNumber;
+    }
+
+    public boolean hasBackupEnemies() {
+        return !backupEnemies.isEmpty();
+    }
+
+    public void removeDead() {
+        activeEnemies.removeIf(enemy -> !enemy.isAlive());
+    }
+
+    public boolean triggerBackupSpawn() {
+        if (backupEnemies.isEmpty()) {
+            return false;
+        }
+
+        activeEnemies.addAll(backupEnemies);
+        backupEnemies.clear();
+        return true;
     }
 
     public void incrementRound() {

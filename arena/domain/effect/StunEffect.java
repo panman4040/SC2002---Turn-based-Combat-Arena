@@ -13,6 +13,6 @@ public class StunEffect extends StatusEffect {
 
     @Override
     public String getName() {
-        return "Stunned (" + getDuration() + " turn" + (getDuration() == 1 ? "" : "s") + " remaining)";
+        return "Stunned";
     }
 }

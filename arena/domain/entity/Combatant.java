@@ -1,8 +1,8 @@
 package arena.domain.entity;
 
+import arena.domain.action.SpecialSkill;
 import arena.domain.effect.StatusEffect;
 import arena.engine.ActionGetter;
-import arena.engine.BattleContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +14,7 @@ public abstract class Combatant {
     private final int baseDefense;
     private final int speed;
     private final List<StatusEffect> statusEffects;
+    private final SpecialSkill specialSkill;
 
     private ActionGetter actionGetter;
 
@@ -25,6 +26,19 @@ public abstract class Combatant {
         this.baseDefense = baseDefense;
         this.speed = speed;
         this.statusEffects = new ArrayList<>();
+        this.specialSkill = null;
+    }
+
+    // If Combatant has a special skill
+    protected Combatant(String name, int maxHp, int baseAttack, int baseDefense, int speed, SpecialSkill specialSkill) {
+        this.name = name;
+        this.maxHp = maxHp;
+        this.hp = maxHp;
+        this.baseAttack = baseAttack;
+        this.baseDefense = baseDefense;
+        this.speed = speed;
+        this.statusEffects = new ArrayList<>();
+        this.specialSkill = specialSkill;
     }
 
     public void setActionGetter(ActionGetter actionGetter) {
@@ -96,6 +110,10 @@ public abstract class Combatant {
         return speed;
     }
 
+    public SpecialSkill getSpecialSkill() {
+        return specialSkill;
+    }
+
     public void addStatusEffect(StatusEffect effect) {
         for (StatusEffect existingEffect : statusEffects) {
             // Check whether effect is already applied
@@ -108,6 +126,11 @@ public abstract class Combatant {
 
         // If no, add the effect
         statusEffects.add(effect);
+    }
+
+    // Remove a given type of Effect, prevent stacking 
+    public void clearEffectsByType(Class<? extends StatusEffect> type) {
+        statusEffects.removeIf(type::isInstance);
     }
 
     public List<StatusEffect> getStatusEffects() {
@@ -141,6 +164,4 @@ public abstract class Combatant {
     }   
 
     public void reduceSpecialCooldown() { /* no-op by default */};
-
-    public void triggerSpecial(BattleContext context) { /* no-op by default */};
 }

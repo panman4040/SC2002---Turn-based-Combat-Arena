@@ -6,18 +6,20 @@ public abstract class SpecialSkill implements Action {
 
     private final String name;
     private final int cooldownDuration;
+    private Combatant target;
 
     protected SpecialSkill(String name, int cooldownDuration) {
-        this.name             = name;
+        this.name = name;
         this.cooldownDuration = cooldownDuration;
+        this.target = null;
     }
 
     public boolean requireTarget() { 
         return false;
     }
 
-    public Action withTarget(Combatant target) {
-        return this;
+    public void setTarget(Combatant target) {
+        this.target = target;
     }
 
     public int getCooldownDuration() {
@@ -28,5 +30,7 @@ public abstract class SpecialSkill implements Action {
     public String getName() {
         return name;
     }
+
+    public Combatant getTarget() { return target; }
 }
  

@@ -2,22 +2,15 @@ package arena.domain.entity;
 
 import arena.domain.action.SpecialSkill;
 import arena.domain.item.Inventory;
-import arena.engine.BattleContext;
 
 public abstract class Player extends Combatant {
     private final Inventory inventory;
     private int specialCooldown;
-    private final SpecialSkill specialSkill;
 
     protected Player(String name, int maxHp, int baseAttack, int baseDefense, int speed, SpecialSkill specialSkill) {
-        super(name, maxHp, baseAttack, baseDefense, speed);
-        this.specialSkill = specialSkill;
+        super(name, maxHp, baseAttack, baseDefense, speed, specialSkill);
         this.inventory = new Inventory();
         this.specialCooldown = 0;
-    }
-
-    public SpecialSkill getSpecialSkill() {
-        return specialSkill;
     }
 
     public Inventory getInventory() {
@@ -34,11 +27,6 @@ public abstract class Player extends Combatant {
 
     public void setSpecialCooldown(int cooldown) {
         this.specialCooldown = cooldown;
-    }
-
-    @Override
-    public void triggerSpecial(BattleContext context) {
-        specialSkill.execute(this, context);
     }
 
     @Override

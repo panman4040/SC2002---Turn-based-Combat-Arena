@@ -1,5 +1,5 @@
 package arena.ui;
 
-public interface DisplayUI {
+public interface InterfaceDisplayUI {
     void displayMessage(String message);
 }
